@@ -1,0 +1,2246 @@
+
+//html
+<!-- link rel="stylesheet" href="/static/public/styles/1.0.0/dku-styles.css" / -->
+
+<link rel="stylesheet" href="/static/public/styles/1.0.0/dku-styles.css" />
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous">
+    </script>
+    
+
+<script type="text/javascript" src="http://163.183.242.159:1200/local/projects/SEK_ENHANCED_WATERFLOODING/static/js/js_components.js">
+</script>
+
+V2
+ 
+<p id= 'footer-message' class="footer">fdgdfhgdfgh</p> 
+    
+<!-- h1>Test json passed items to plotly </h1>
+<div id='chart'></div -->
+<!-- script>
+    
+    let s = {'name':'test', 'x':[1,2,3], 'y':[2,4,6] }
+    let fig = { 'data' : [s] }
+   
+    const chartDiv = document.getElementById('chart');
+    Plotly.newPlot(chartDiv, fig );
+</script -->
+ 
+ 
+  <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">PFM Application V2</a>
+        <div>
+        <label class="navbar-brand" id='project-indicator'>fsdf</label>
+        </div>
+        
+         <a class="navbar-brand" onclick="showPage('project-page')">Project</a> <a class="navbar-brand">Study</a>  <a class="navbar-brand">Summary</a>
+        
+        <!-- button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <!-- Dropdown Menu in Navbar -->
+                <li class="nav-item dropdown">
+                    <!-- a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Project
+                    </a -->
+                    <!--div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" onclick="showPage('new-project')">New</a>
+                        <a class="dropdown-item"  onclick="showPage('open-project')">Open</a>
+                    </div -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+   
+     
+    <!-- Content Divs -->
+    <div id='project-page'  class="page">
+        <a id='x1' class='small-button' onclick="showOption('new-project',this)">New</a>
+        <a id='x2' class='small-button' onclick="showOption('open-project',this)">Open</a>
+        <hr></hr>
+        <script>
+            function showOption(id, obj){
+            
+            
+            document.getElementById('new-project').classList.add('hidden')
+            document.getElementById('open-project').classList.add('hidden')
+            
+            document.getElementById('x1').classList.remove('active')
+            document.getElementById('x2').classList.remove('active')
+            
+            
+            document.getElementById(id).classList.remove('hidden')
+            obj.classList.add('active')
+            }
+            
+        </script>
+        
+    <div id="new-project" class="apage">
+      
+         	<div class='new-project-dialog' id="new-project-dialog"  >
+
+				<!-- h2>New project</h2 -->
+
+				<div style="padding: 10px;">
+				<h5>Project name</h5> 
+                <input 
+				placeholder='Unique project name'
+				class='form-control new-study-name' type="ext" id="new-project-name" />
+
+				<span style="font-size:0.8em; font-style:italic">
+					<i class="fa fa-exclamation-triangle" style='color:red'></i>
+					Previous project with the same name will be overwritten</span>
+
+                <hr></hr>
+		 
+	     <div id='data-source-page' style='display:block' class="apage container-fluid amt-4">
+        <h5>Data source</h5>
+        <!-- Radio buttons -->
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-primary active">
+                <input id='source-files' type="radio" name="toggle" onclick="showDiv('div1')" checked> Files
+            </label>
+            <label class="btn btn-outline-primary">
+                <input id='source-crm'type="radio" name="toggle" onclick="showDiv('div2')"> CRM model
+            </label>
+            <label class="btn btn-outline-primary">
+                <input id='source-ix' type="radio" name="toggle" onclick="showDiv('div3')"> IX model
+            </label>
+        </div>
+
+        <!-- Div containers -->
+        <div id="div1" class="content-div mt-3" style="display: block;">
+					<b>Pairs table</b> <input class='pairs-file-control form-control' type="file" id="pairs-file-control" />
+					<b>Wells table</b> <input class='wells-file-control form-control' type="file" id="wells-file-control" />
+					<b>Locations table</b> <input class='locations-file-control form-control' type="file" id="locations-file-control" />
+             
+            <hr></hr>
+            <button class= 'btn btn-primary' id='upload-files' >Upload</button>
+            
+        </div>
+        <div id="div2" class="content-div mt-3">
+            
+            <div class="d-flex align-items-center gap-2">
+            <label>Project</label>
+            <select class='form-control' id='crm-project-selector'></select>
+            <button class= 'btn btn-primary' id='refresh-crm-projects' >Refresh</button>
+            </div>
+            <div>
+                <label>Studies with liquid history-match and Koval</label>
+                <select class='form-control' id='crm-study-selector'></select>
+            </div>
+            
+            <div>
+                <label>RMUs in the study</label>
+                <select class='form-control' id='rmu-study-selector'></select>
+            </div>
+            
+            
+            <div>
+                <label>End of history date (leave empty to let the system guess) </label>
+                <input class='form-control' type="date" id="crm-date" min="2010-01-01" max="2024-12-31" />
+            </div>
+            
+            <hr>
+            <div>
+            <button class= 'btn btn-primary' id='create-from-crm' >Apply</button>
+            </div>
+                
+                
+                
+            
+            <h7>Content for Option 2</h7>
+            <p>This is the content for the second option.</p>
+            
+        </div>
+        <div id="div3" class="content-div mt-3">
+            <h5>Content for Option 3</h5>
+            <p>This is the content for the third option.</p>
+        </div>
+    </div>
+
+ 
+ 
+ 
+			</div>
+
+  
+			</div>
+
+    </div>
+    <div id="open-project" class="apage">
+        <h5>PFM study</h5>
+        <combobox-component id="projectSelect"></combobox-component>
+        <button class='btn btn-primary' id='refresh-list-studies'>Refresh</button>
+    </div>
+    </div>
+ 
+                
+<!-- div id="scatter-map" style="width: 100%; height: 100%;"></div -->
+    
+    
+        
+    <div id = 'input-tables' class='card hidden'>
+ 
+        <h5>End of history state</h5>
+        <label><i><small>Input for PFM calculations</small></i></label>
+        <label class='hidden alert_label' id='history-refreshed-message'> Inputs Updated </label>
+ 
+        <details><summary>Wells</summary>
+        <table id="wells-table"> <thead></thead><tbody></tbody></table>
+        </details>
+        
+        <details><summary>Pairs</summary>
+        <table id="pairs-table"><thead></thead><tbody></tbody></table>
+        </details>
+        
+        <details>
+        <summary>Locations</summary>
+        <table id="locations-table"><thead></thead><tbody></tbody></table>
+        </details>
+        
+     </div>
+    
+    <p></p>
+    <div id = 'strategy-container' class='card'>
+    <h5>Strategy</h5>
+        <details>
+        <div class="container-fluid ">
+
+            <div id="inputForm">
+
+
+                <div class="row mb-3">
+                    <label for="pfm_study_name" class="col-sm-3 col-form-label">PFM Strategy Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="pfm_strategy_name" name="pfm_strategy_name" value="PFMStudy">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="strategy_type" class="col-sm-3 col-form-label">Strategy type:</label>
+                    <div class="col-sm-9">
+                        <select class="form-select" id="strategy_type" name="strategy_type">
+                            <option value="IE">IE</option>
+                            <option value="RE">RE</option>
+                            <option value="VRR">VRR</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="injection_capacity" class="col-sm-3 col-form-label">Injection Capacity:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="injection_capacity" name="injection_capacity" value="6150.00">
+                    </div>
+                </div>
+
+                <!-- div class="row mb-3" style='display:none'>
+                    <label for="vrr_target" class="col-sm-3 col-form-label">VRR Target:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="vrr_target" name="vrr_target" value="0.0">
+                    </div>
+                </div --> 
+
+                <details> <summary><b>Weighting curve</b></summary>
+                <div class="row mb-3" >
+
+
+                    <div class='col-6'>
+
+                        <div class="row mb-3">
+                            <div class='col-3'><label  for="slider">Shape Weighting Curve:</label></div>
+                            <div class='col'><input style='width:100%' type="range" id="shape_weighting_curve" min=0 max=2 value=2 step=0.1 /></div>
+                            <div class='col-1'><label  id="shape_weighting_curve_valueDisplay" class="value-display">2</label></div>
+                            <script>
+                            document.getElementById('shape_weighting_curve').addEventListener('change', (evt)=>{ 
+                            document.getElementById('shape_weighting_curve_valueDisplay').innerHTML = evt.target.value; 
+                            })
+                            </script>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="minimum_weight" class="col-sm-4 col-form-label">Minimum Weight:</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="minimum_weight" name="minimum_weight" value="-1.0">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="maximum_weight" class="col-sm-4 col-form-label">Maximum Weight:</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="maximum_weight" name="maximum_weight" value="1.0">
+                            </div>
+                        </div>
+                    </div>
+
+                            <div id='strategy-chart' class='col-6' style='background:red; min-height:300px'> fghnfghfghfgh 
+                            </div>
+
+                </div>
+                      </details> 
+
+
+
+                <details>
+                    <summary><b>Advanced parameters</b></summary>
+                <!-- h5>Opt ranges</h5 -->
+                <!-- div class="row mb-3">
+                    <label for="opt_range_min" class="col-sm-3 col-form-label">Opt Range Min:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="opt_range_min" name="opt_range_min" value="0.0">
+                    </div>
+                </div -->
+
+                <!-- div class="row mb-3">
+                    <label for="opt_range_max" class="col-sm-3 col-form-label">Opt Range Max:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="opt_range_max" name="opt_range_max" value="0.16">
+                    </div>
+                </div -->
+
+                <!-- div class="row mb-3">
+                    <label for="opt_range_avg" class="col-sm-3 col-form-label">Opt Range Avg:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="opt_range_avg" name="opt_range_avg" value="0.08">
+                    </div>
+                </div -->
+
+                <hr>
+
+
+                <!-- hr>
+                <h5>Aquifer Handling</h5>
+                <div class="row mb-3">
+                    <label for="aquifer_handling" class="col-sm-3 col-form-label">Aquifer Handling:</label>
+                    <div class="col-sm-9">
+                        <select class="form-select" id="aquifer_handling" name="aquifer_handling">
+                            <option value="REALLOCATE">Reallocate</option>
+                            <option value="NOACTION">No Action</option>
+                        </select>
+                    </div>
+                </div -->
+
+                <!-- div class="row mb-3">
+                    <label for="aquifer_cutback_fraction" class="col-sm-3 col-form-label">Aquifer Cutback Fraction:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="aquifer_cutback_fraction" name="aquifer_cutback_fraction" value="0.25">
+                    </div>
+                </div>
+                <hr -->
+
+                <h5>Efficiency calculations</h5>
+                <div class="row mb-3">
+                    <label for="efficiency_range" class="col-sm-3 col-form-label">Efficiency Range:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="efficiency_range" name="efficiency_range" value="1.0">
+                    </div>
+                </div>
+
+                <!-- div class="row mb-3">
+                    <label for="range_control" class="col-sm-3 col-form-label">Range Control:</label>
+                    <div class="col-sm-9">
+                        <select class="form-select" id="range_control" name="range_control">
+                            <option value="DYNAMIC">Dynamic</option>
+                            <option value="STATIC">Static</option>
+                        </select>
+                    </div>
+                </div -->
+
+
+            </details>
+
+                <!-- div class="row mb-3">
+                    <label for="shape_weighting_curve" class="col-sm-3 col-form-label">Shape Weighting Curve:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="shape_weighting_curve" name="shape_weighting_curve" value="2.0">
+                    </div>
+                </div -->
+
+
+                <br>
+
+
+
+
+
+            </div>
+
+
+                 <div>
+                <input id='save-strategy-checkbox' type='checkbox' style='margin-right:10px'/>
+                    <label>Save strategy </label> 
+                     <br></br>
+                    <div> 
+                        <button id='apply-strategy'  class="btn btn-primary">Apply
+                        </button>
+                    </div> </div>            
+
+
+
+
+        </div>
+        </details>
+    </div>    
+      
+    <div id = 'strategy-results-container'  class="container-fluid ">      
+        <h5>Results Summary</h5>
+        <div   id='strategy_summary_table'></div> 
+    </div>  
+ 
+
+ 
+        
+    <!-- JavaScript to handle the show/hide functionality -->
+ <script>
+        function showDiv(divId) {
+             console.log( selected_option )
+     
+            // Hide all divs
+            document.getElementById('div1').style.display = 'none';
+            document.getElementById('div2').style.display = 'none';
+            document.getElementById('div3').style.display = 'none';
+
+            // Show the selected div
+            document.getElementById(divId).style.display = 'block';
+     
+            if( divId == 'div1')
+             selected_option = 1
+            if( divId == 'div2')
+             selected_option = 2
+            if( divId == 'div3')
+             selected_option = 3
+     
+             console.log( selected_option )
+     
+     
+        }
+     
+     
+      function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.display = 'none';
+            });
+
+            // Show the selected page
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+     
+let selected_option = -1 
+//document.getElementById('source-files').click();
+
+
+     
+
+        
+</script>
+         
+//css 
+/*
+    This imports default colors, you can use them with the syntax `var(--variable-name)`.
+    Example:
+        border: 3px solid var(--border-color);
+*/
+@import '/static/public/styles/1.0.0/variables.css';
+
+        .page {
+            display: none; /* Hide all divs initially */
+            padding: 15px;
+            border: 1px solid lightgrey;
+            aaborder-radius: 5px;
+            margin-top: 10px;
+            background-color: #f8f9fa;
+        }
+
+/*{margin:10px;}*/
+.hidden{ display:none; }
+
+.card{ padding:10px}
+.page{ padding:10px}
+ 
+.load-project-menu-button{
+    margin-right: 10px;
+}
+ 
+
+  .footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+}
+
+.alert_label {
+  padding: 5px;
+  background-color: green;
+  color: white;
+}
+
+
+a.small-button{
+    xxborder-left: 5px solid grey;
+    border-bottom: 5px solid darkgrey;
+    padding-left:20px;
+    padding-right:20px;
+    padding-bottom:10px;   
+    width: 300px;
+    height: 100px;
+}
+
+a.small-button.active{
+    xxborder-left: 5px solid green;
+    border-bottom: 5px solid darkgreen;
+    padding-left:20px;
+    padding-right:20px;
+    padding-bottom:10px;   
+    width: 300px;
+    height: 100px;
+}
+
+t3333able {
+  border-collapse: collapse;
+  aawidth: 100%;
+}
+  
+th3333, t33333d {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+t333333r:hover {background-color: lightgrey;}
+
+
+
+
+
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      text-align: center;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px; /* Reduced padding by factor of 2 */
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Bar Styles */
+    .bar {
+      height: 10px;
+      display: inline-block;
+      margin-left: 5px;
+      border-radius: 5px;
+    }
+
+    .bar.red {
+      background-color: #ff4d4d;
+    }
+
+    .bar.green {
+      background-color: #28a745;
+    }
+
+    /* Alignments */
+    td.change {
+      text-align: left; /* Align text and bar at the left */
+    }
+
+    /* Responsive Table */
+    @media screen and (max-width: 768px) {
+      table {
+        font-size: 12px;
+      }
+      th, td {
+        padding: 4px; /* Reduced padding further for smaller screens */
+      }
+    }
+
+//js
+            
+ 
+    let pfm_project_name = 'pfm_single_project';
+    let pfm_study_name   = undefined ;
+    let pfm_pairs = undefined 
+    let pfm_wells = undefined 
+    let pfm_locations = undefined  
+    let pfm_strategy = undefined;
+      
+function create_strategy_summary_table( input ){
+    // Create the table and append it to the document body
+    const tableData = [
+    ["Unconstrained Strategy Results",input.name],
+    ["Oil gain (rb/d)", input['Delta_Oil'], 
+     "Rec WI rate (rb/d)", input['Updated_Injection_Rate'] ],
+    [
+     "Water redu. (rb/d)", input['Delta_WH'], "New VRR", 1.0],
+    ["Oil Prd Rate (rb/d)", input['Updated_Oil_Production_Rate'],
+     "Liq Prd Rate (rb/d)", input['Updated_Production_Rate'] ],
+    ["Water Prd Rate (rb/d)", Math.round(input['Updated_Production_Rate']-input['Updated_Oil_Production_Rate'],2), "", ""]
+    ]
+
+    const table = document.createElement("table");
+    table.classList.add('table')
+    table.classList.add('table-bordered')
+    
+    
+
+    
+    
+    table.style.borderCollapse = "collapse";
+    table.style.margin = "20px";
+    //table.style.width = "600px";
+    table.style.textAlign = "right";
+
+    // Apply table styles
+    const applyCellStyle = (cell, isHeader = false) => {
+    //cell.style.border = "0px solid grey";
+    cell.style.padding = "10px";
+    cell.style.fontWeight = isHeader ? "bold" : "normal";
+    if(isHeader) { cell.style.backgroundColor = 'blue'; cell.style.color = 'white' }
+    };
+
+    // Populate the table
+    tableData.forEach((row, rowIndex) => {
+    const tr = document.createElement("tr");
+
+
+    row.forEach((cellText, colIndex) => {
+        const cell = rowIndex === 0 ? document.createElement("th") : document.createElement("td");
+        cell.textContent = cellText;
+
+        if (rowIndex === 0)
+        cell.colSpan = 2; 
+
+        applyCellStyle(cell, rowIndex === 0);
+        // Highlight specific cells
+        if (rowIndex > 0) {
+        if ((rowIndex === 1 && colIndex === 1) || (rowIndex === 3 && colIndex === 3)) {
+            cell.style.color = "green";
+        }
+        if (rowIndex === 2 && colIndex === 1) {
+            cell.style.color = "red";
+        }
+        if (rowIndex === 3 && colIndex === 1) {
+            cell.style.color = "orange";
+        }
+        }
+        tr.appendChild(cell);
+    });
+    table.appendChild(tr);
+    });
+
+
+
+    return table 
+}
+
+
+
+   function set_message( m, color, mili_seconds = 1000 ){
+        let ele = Id('footer-message');
+        ele.innerHTML = m ; 
+        ele.style.backgroundColor = color; 
+        ele.classList.remove('hidden');
+        setTimeout(function() {ele.classList.add('hidden')}, mili_seconds);
+        
+         
+    }
+    function display_message( m, mili_seconds = 1000 ){
+        set_message( m, 'green', mili_seconds );
+
+    }
+    function display_error( m, mili_seconds = 1000  ){
+        set_message( m,'red',  mili_seconds );
+
+    }
+
+
+
+	function upload_data_files(iurl, imethod, idata ) {
+	return new Promise((resolve, reject) => {
+
+		$.ajax({
+
+			type: imethod,
+			url: iurl,
+			processData: false,
+			contentType: false,
+			data: idata,
+			dataType: 'json',
+
+			xhr: function () { 
+				
+				let xhr = new window.XMLHttpRequest(); 
+				xhr.upload.addEventListener("progress", function(evt) {
+					if (evt.lengthComputable) {
+						let percentComplete = ((evt.loaded / evt.total) * 100);
+
+						console.log(' progress ', Math.trunc(percentComplete) );
+						//if( progressUpdate != undefined )
+						//progressUpdate( Math.trunc(percentComplete) );
+					}
+				}, false);
+
+				return xhr;
+			
+			}, 
+            
+			success: function ( resp ) { //data, textStatus, jqXHR ) { //(resp){//(resp) {
+				console.log('ajax--success', resp)
+				if (resolve != undefined) resolve(resp);
+				
+                if('message' in resp ) {
+                        display_message( resp['message'] )
+                }
+                
+			},
+
+			error: function (jqXHR, textStatus, errorThrown) {
+				console.log('ajax-error', jqXHR, textStatus, errorThrown)
+				
+                if (reject != undefined) reject(jqXHR,status, errorThrown );
+                
+                let error_message = jqXHR.responseText
+                let message = 'Error in the backend.\nThe error was:\n'+ error_message + '\n\n'+ '\nThe status code was: '+jqXHR.status
+                display_error( message );
+                
+			}
+        
+            
+			});
+
+		});
+	}
+
+	function get_server(iurl, imethod, idata, resolve, reject) {
+
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				type: imethod,
+				url: iurl,
+				xhr: function () { return new window.XMLHttpRequest(); },
+
+				processData: false,
+				contentType: 'application/json',
+				data: idata,
+				success: function (resp) {
+					
+                    console.log('success')
+                    console.log( resp )
+                    if('message' in resp ) {
+                        alert( resp['message'] )
+                    }
+                 
+                    
+					if (resolve != undefined) resolve(resp);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					console.log('error', jqXHR, 'status', status, 'thrown', errorThrown);
+					console.log('status', status);
+					console.log('errorThrown', errorThrown);
+					
+                    let error_message = jqXHR.responseText
+                    let message = 'Error in the backend.\nThe error was:\n'+ error_message + '\n\n'+ '\nThe status code was: '+jqXHR.status
+                    alert( message );
+
+					if (reject != undefined) reject(jqXHR,status, errorThrown );
+				}
+			});
+		});//ajax promise
+	}
+
+
+    function Id( id ){
+        return document.getElementById( id );
+    }   
+
+
+    function populate_pairs_wells_locations(tableId, data) {
+            
+            Id('input-tables').classList.remove('hidden')
+        
+        
+        
+            const table = document.getElementById(tableId);
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+
+            // Clear existing table content
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Generate header row
+            if (data.length > 0) {
+                const headerRow = document.createElement('tr');
+                Object.keys(data[0]).forEach(key => {
+                    const th = document.createElement('th');
+                    th.textContent = key;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+            }
+
+            // Generate data rows
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+        }
+
+
+    function get_strategy_as_object(){
+            
+        const formData = {};
+        const formElement = document.getElementById('inputForm');
+        const inputs = formElement.querySelectorAll('input, select');
+        inputs.forEach(input => {
+                const key = input.id;
+                let value = input.value;
+                if (input.type === 'number') {
+                    value = parseFloat(value);
+                }
+                if (input.type === 'range') {
+                    value = parseFloat(value);
+                }
+            
+           
+            
+                formData[key] = value;
+        });
+        
+        console.log( 'formData', formData ); 
+
+        return formData
+        
+    }
+
+
+
+    Id('apply-strategy').addEventListener('click', (event) => {
+      
+        console.log('apply strategy clicked');
+        
+        let data = {
+             pfm_project_name : pfm_project_name, 
+             pfm_study_name  :  pfm_study_name ,
+             //pfm_pairs : pfm_pairs, 
+             //pfm_wells : pfm_wells, 
+             //pfm_locations : pfm_locations, 
+             pfm_strategy : get_strategy_as_object(),
+             save_strategy: Id('save-strategy-checkbox').checked
+        }
+        
+        console.log('applying strategy ')
+        console.log( data )
+        
+        let url =  getWebAppBackendUrl('/apply_strategy')
+        let message = JSON.stringify( data );
+        get_server(url, 'POST', message )
+           
+			.then( ( data ) =>
+                  {
+                    let strategy_summary = data.strategy_summary
+                    console.log( strategy_summary )
+            
+                    let table = create_strategy_summary_table( strategy_summary )
+                    let summary_container = document.getElementById('strategy_summary_table') 
+                    summary_container.innerHTML = "" 
+                    summary_container.appendChild( table )
+            
+                    //populate_pairs_wells_locations('wells-table', data.wells);
+                    //populate_pairs_wells_locations('pairs-table', data.pairs);
+                    //Id('crm-date').value = data.date 
+            
+            alert('applied strategy')
+            
+            }) 
+            .catch ((jqXHR,status, errorThrown)=>{
+                alert('error occured ', jqXHR,status, errorThrown  )
+                console.log( jqXHR,status, errorThrown )
+            })  
+        
+           
+    });
+
+    Id('create-from-crm').addEventListener('click', (event) => {
+    
+        /*
+        pass the data to the engine incluiding a potential empty date. 
+        
+        the engine generates the wells, pairs tables and stores them in the study. 
+        
+        The engine returns the end-of-history date used. It will be the same as 
+        the one passed to the engine if the date input is left empty 
+        
+        */
+        console.log('create pfm input from crm case')
+        
+        let pfm_study_name    = Id('new-project-name').value 
+        let crm_project_name  = Id('crm-project-selector').value 
+        let crm_study_name    = Id('crm-study-selector').value
+        let crm_date          = Id('crm-date').value  
+        let crm_subzone       = Id('rmu-study-selector').value 
+        
+        console.log( crm_project_name, crm_study_name, crm_date,crm_subzone );
+          
+        let data  = {
+            'pfm_study_name': pfm_study_name, 
+            'project_name':crm_project_name,
+            'study_name':crm_study_name,
+            'date':crm_date, 
+            'subzone_name':crm_subzone
+        } 
+        
+        let url =  getWebAppBackendUrl('/create_input_from_crm_project')
+        let message = JSON.stringify( data );
+        get_server(url, 'POST', message )
+        
+			.then( ( data ) =>
+                  {
+                    console.log( data )
+                    populate_pairs_wells_locations('wells-table', data.wells);
+                    populate_pairs_wells_locations('pairs-table', data.pairs);
+                    Id('crm-date').value = data.date 
+            
+            }) 
+            .catch ((jqXHR,status, errorThrown)=>{
+                alert('error occured ', jqXHR,status, errorThrown  )
+                console.log( jqXHR,status, errorThrown )
+            })  
+        
+    
+    });
+
+    Id('crm-study-selector').addEventListener('change', (event) => {
+        const selectedOption = event.target.options[event.target.selectedIndex];
+        const study_name = selectedOption.value;
+        console.log('crm study selected ', study_name )
+
+        //rmu-study-selector
+        const projectSelector = Id('crm-project-selector');
+        const data = JSON.parse(projectSelector.getAttribute('data-subzones'));
+        const subzones = data[study_name]
+        
+       let selectElement = Id('rmu-study-selector');
+            selectElement.innerHTML = '<option value="" disabled selected>Select an option</option>';   
+            subzones.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                selectElement.appendChild(opt);
+            });
+            
+    })
+
+    Id('crm-project-selector').addEventListener('change', (event) => {
+            // Get the selected option
+            const selectedOption = event.target.options[event.target.selectedIndex];
+            const value = selectedOption.value;
+            const text = selectedOption.textContent;
+
+            // Display the selected option in the paragraph
+            console.log('selected project',value )
+         
+            
+            const projectSelector = Id('crm-project-selector');
+            const data = JSON.parse(projectSelector.getAttribute('data-studies'));
+            const studies = data[value]
+            console.log('stored data in the selector', data, 'studies', studies);
+        
+        
+            let selectElement = Id('crm-study-selector');
+            selectElement.innerHTML =   '<option value="" disabled selected>Select an option</option>';  // Clear any existing options
+
+            studies.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                selectElement.appendChild(opt);
+            });
+                
+        //history-refreshed-message
+        
+        
+        });
+
+    Id('refresh-list-studies').addEventListener( 'click', ()=>{
+        
+        console.log('refresh list clicked')
+        let url =  getWebAppBackendUrl('/list_studies')
+        let message = JSON.stringify( {} );
+        get_server(url, 'GET', message )
+			.then( (resp) =>{
+                let names = resp['data'] 
+                Id('projectSelect').populateSelect( names )
+            
+            }) 
+            .catch ((jqXHR,status, errorThrown)=>{
+                alert('error occured ', jqXHR,status, errorThrown  )
+                console.log( jqXHR,status, errorThrown )
+            })  
+    });
+
+    Id('refresh-crm-projects').addEventListener( 'click', ()=>{
+        
+        console.log('refresh-crm-projects');
+        
+        let url  =  getWebAppBackendUrl('/retrieve_crm_projects');
+           
+        get_server(url, 'GET', {} )
+        
+        .then( (resp) =>{
+            console.log( 'data is', resp['project_names'] );
+            const selectElement = Id('crm-project-selector');
+            selectElement.innerHTML = '<option value="" disabled selected>Select an option</option>';  
+            
+            selectElement.setAttribute('data-studies', JSON.stringify(resp['studies']));
+            selectElement.setAttribute('data-subzones', JSON.stringify(resp['subzones']));
+            // Populate with new options
+            let options = resp['project_names']
+            options.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option;
+                        opt.textContent = option;
+                        selectElement.appendChild(opt);
+                    });
+            
+            })
+        
+        .catch((err)=>{
+            
+            console.log( err );
+            
+        })
+        
+    });
+    
+    Id('upload-files').addEventListener( 'click', ()=>{
+         
+     console.log('upload-files cklicked')
+     let study_name = document.getElementById('new-project-name').value;  
+      
+     let x = Id('pairs-file-control');
+     console.log(' x ', x )    
+         
+     let files = [
+                  Id('pairs-file-control').files[0],
+                  Id('wells-file-control').files[0], 
+                  Id('locations-file-control').files[0]
+                 ];
+         
+         
+     let fdata = new FormData();
+     fdata.append( 'study_name', study_name);
+     fdata.append( 'pairs', files[0]);
+     fdata.append( 'wells', files[1]);
+     fdata.append( 'locations', files[2]);
+       
+     let url =  getWebAppBackendUrl('/upload_files')
+            
+			upload_data_files(url, 'POST', fdata )
+			.then( (data) =>{
+                console.log('success')
+                console.log( data )
+            
+                populate_pairs_wells_locations('wells-table', data.wells);
+                populate_pairs_wells_locations('pairs-table', data.pairs);
+                
+                alert('File upload success')
+            }) 
+        
+            .catch ((jqXHR,status, errorThrown)=>{
+                
+                console.log( jqXHR,status, errorThrown )
+            })
+         
+     console.log('upload clicked', fdata )
+         
+     });
+
+
+
+
+
+function populateForm(data) {
+    
+    let strategyForm = Id('inputForm');
+    
+    
+    Object.keys(data).forEach(key => {
+        
+        console.log('key is ', key) 
+        
+        //const element = strategyForm.getElementById(key);
+        const element = strategyForm.querySelector(`#${key}`);
+        
+        if (element) {
+            
+            console.log('element found', element )
+            
+            if (element.tagName === "INPUT") {
+                if (element.type === "checkbox") {
+                    element.checked = data[key];
+                } 
+                if (element.type === "number") {
+                    element.value = parseFloat(data[key]);
+                } 
+                if (element.type === "range") {
+                    element.value = parseFloat(data[key]);
+                } 
+                
+                
+                
+                else {
+                    element.value = data[key];
+                }
+                
+            } else if (element.tagName === "SELECT") {
+                element.value = data[key];
+            }
+            
+        }
+    });
+}
+
+//{'pfm_project_name': 'pfm_single_project', 'pfm_strategy': {'project_name': '', 'pfm_study_name': 'PFMStudy', 'strategy_type': 'EFFICIENCY', 'injection_capacity': 6150, 'vrr_target': 0, 'shape_weighting_curve': '2', 'minimum_weight': -1, 'maximum_weight': 1, 'opt_range_min': 0, 'opt_range_max': 0.16, 'opt_range_avg': 0.08, 'aquifer_handling': 'REALLOCATE', 'aquifer_cutback_fraction': 0.25, 'efficiency_range': 1, 'range_control': 'DYNAMIC', 'IE_or_RE': 'IE'}, 'save_strategy': False}
+
+
+
+    
+
+  
+    Id('projectSelect').addEventListener( 'selection_changed', (evt)=>{
+         
+        let study_name = evt.detail;
+        console.log('projectSelect clicked.  Study:', study_name )
+          
+        let url  =  getWebAppBackendUrl('/retrieve_study');
+        let data =  {'study_name': study_name } 
+        let message = JSON.stringify( data );
+        
+        get_server(url, 'POST', message )
+         
+        .then( (data) =>{
+            console.log( '******loaded-----resp is', data );
+                populate_pairs_wells_locations('wells-table', data.wells);
+                populate_pairs_wells_locations('pairs-table', data.pairs);
+                populate_pairs_wells_locations('locations-table', data.locations);
+            
+                Id('input-tables').classList.remove('hidden')
+                Id('history-refreshed-message').classList.remove('hidden')
+                setTimeout(function() {
+                Id('history-refreshed-message').classList.add('hidden')}, 1000);
+            
+                pfm_study_name = study_name
+                pfm_pairs = data.pairs; 
+                pfm_wells =  data.wells; 
+                pfm_locations = data.locations; 
+                pfm_strategy = data.strategy;
+            
+                console.log('loaded strategy');
+                console.log( pfm_strategy  );
+                populateForm( pfm_strategy  );
+            
+                Id('project-indicator').value = pfm_study_name
+            
+                display_message('Data loaded')
+            
+            })
+        
+        .catch((err)=>{
+            Id('project-indicator').value = undefined;
+            pfm_study_name = undefined; 
+            pfm_pairs      = undefined; 
+            pfm_wells      = undefined; 
+            pfm_locations  = undefined; 
+            pfm_strategy   = undefined;
+            
+            console.log( err );
+            
+        })
+     
+        
+     });
+     
+
+
+
+
+
+
+
+    showPage('project-page');
+    Id('x2').click();
+    Id('refresh-list-studies').click();
+    Id('source-files').click()
+    document.getElementById('footer-message').style.backgroundColor  = 'blue';
+  
+    //Id('projectSelect').populateSelect(['option 0', 'option 1', 'option 2', 'option 3'])
+      
+    
+
+    // Function to plot the scatter map
+    /*function plotScatterMap(data) {
+      const trace = {
+        type: 'scattergeo',
+        mode: 'markers+text',
+        text: data.names,
+        textposition: 'top center',
+        lat: data.lat,
+        lon: data.long,
+        marker: {
+          size: 10,
+          color: 'blue',  
+        },
+      };
+
+      const layout = {
+        title: 'Scatter Map',
+        geo: {
+          projection: {
+            type: 'equirectangular',
+          },
+          showland: true,
+          landcolor: 'rgb(217, 217, 217)',
+          subunitcolor: 'rgb(255,255,255)',
+          countrycolor: 'rgb(255,255,255)',
+        },
+      };
+
+      Plotly.newPlot('scatter-map', [trace], layout);
+    }
+
+    // Example data
+    const exampleData = {
+      names: ['p1', 'p2', 'p3'],
+      lat: [87, 88, 74],
+      long: [55, 60, 52],
+    };*/
+
+    // Call the function with example data
+    //plotScatterMap(exampleData);
+
+
+
+$.getJSON(getWebAppBackendUrl('/first_api_call'), function(data) {
+    console.log('Received data from backend', data)
+    const output = $('<pre />').text('Backend reply: ' + JSON.stringify(data));
+    $('body').append(output)
+});
+
+
+//python
+import dataiku
+import pandas as pd
+from collections import OrderedDict, defaultdict
+ 
+from wf_lib.data.dataiku_local_folder_connector import KOCDataikuLocalStorageConnector, DataikuLocalFolderConnector
+
+from wf_lib.data.crm_data_utils import * 
+import wf_lib.data.crm_data_utils
+from enum import Enum
+from datetime import datetime
+import math, pprint  
+from dateutil.relativedelta import relativedelta
+
+from pfm2.pfm2 import * 
+
+
+from flask import request    
+from flask import url_for
+from flask import render_template, jsonify#pathlib  
+
+pfm_config = {  
+            'managed_folder_name':'azFolder',
+            'app_name':'WF',
+            'data_folder_name':'data', #(optional,if not given it is set to data. It is relative to the project path )
+            'projects_folder_name':'pfm_projects', #(optional,if not given it is set to projects )
+            'studies_folder_name':'studies', #(optional,if not given it is set to studies. It is relative to the project )
+            'project_name': 'pfm_single_project',
+            'dataset_name': 'pfm_dataset'
+    
+}
+crm_config = {'managed_folder_name': 'azFolder', 'app_name': 'WF', 
+          'data_folder_name': 'data', 
+          'projects_folder_name': 'projects', 
+          'studies_folder_name': 'studies',
+          }
+
+ 
+
+ 
+def get_pfm_injection_estimates( pairs, wells, input_data ):
+        
+    # first find the unique injector and producer names and asign to each a 
+    # injector_id, producer_id and global id. Add these as the first columns in the 
+    # table 
+    producer_names = sorted(list( set(pairs['PRODUCER']) ))
+    injector_names = sorted(list( set(pairs['INJECTOR']) ))
+        
+    # Pair_RE_Norm 
+    pairs['IE_or_RE'] = pairs['IE'] # if input_data['IE_or_RE'] == 'IE' else pairs['Pair_RE']
+        
+    # Dopt_IE 
+    #=IF(P8>$P$4,MIN(1,(P8-$P$4)/($P$3-$P$4)),MIN(1,($P$4-P8)/($P$4-$P$2)))
+    P4,P3,P2 = input_data['opt_range_avg'], input_data['opt_range_max'], input_data['opt_range_min'] 
+    pairs['Dopt_IE'] = pairs['IE_or_RE'].apply( lambda value: min(1,( value-P4)/(P3-P4)) if value > P4 else min(1,(P4-value)/(P4-P2)) )
+
+    #IF(P8>$P$4,1+$R$3*POWER(Q8,$P$5),1+$R$2*POWER(Q8,$P$5))
+    P5 = input_data['shape_weighting_curve']
+    P8,Q8 = pairs['IE_or_RE'].values, pairs['Dopt_IE'].values
+    wmin, wmax = input_data['minimum_weight'], input_data['maximum_weight']
+        
+    # Pair_Weight
+    Pair_Weight = [] 
+    for n,value in enumerate(P8):
+        x = 1 + wmax * pow( Q8[n], P5) if value > P4 else 1 + wmin * pow (Q8[n],P5)
+        Pair_Weight.append( x )   
+    pairs['Pair_Weight'] = Pair_Weight
+        
+    # this finishes the left part of the PFM-Comp in Sanjoy's spreadsheet 
+    inj_ResvolRate_sum  = wells[ wells['TYPE'] == 'INJ' ]['LIQUID_RATE'].sum()
+    prod_ResvolRate_sum = wells[ wells['TYPE'] == 'PROD' ]['LIQUID_RATE'].sum()
+
+    #in Sanjoys spreadsheet this is W_InjectionFraction and W_ProductionFraction
+    wells['RATE_FRACTION'] = -1 
+    mask = wells['TYPE'] == 'INJ'
+    wells.loc[mask,'RATE_FRACTION'] = wells.loc[mask,'LIQUID_RATE']  / inj_ResvolRate_sum
+
+    mask = wells['TYPE'] == 'PROD'
+    wells.loc[mask,'RATE_FRACTION'] = wells.loc[mask,'LIQUID_RATE']  / prod_ResvolRate_sum
+
+    
+    names = wells[ 'NAME' ].values 
+    rate_fraction = wells[ 'RATE_FRACTION' ].values 
+    name_rate_map = {} 
+    for n, name in enumerate(names):
+        name_rate_map[name] = rate_fraction[n] 
+        
+            
+    pairs['Old_Well_to_Field_InjectionRatio'] = pairs['INJECTOR'].apply( lambda name: name_rate_map[name] )# lambda x: )
+    pairs['Pair_to_Field_Delta'] = ( pairs['Pair_Weight'] - 1.0 ) * (pairs['Old_Well_to_Field_InjectionRatio'] * pairs['ALLOCATION'])#pairs['Old_Pair_to_Field_InjectionRatio'] 
+        
+    # calculate New_Well_to_Field_Inj_Capacity_Ratio
+    # col AA in Sanjoys spreadsheet 
+    old_well_to_field_injection_ratio = pairs.groupby( ['INJECTOR'] )['Old_Well_to_Field_InjectionRatio'].mean().to_dict()
+    pair_to_field_delta = pairs.groupby( ['INJECTOR'] )['Pair_to_Field_Delta'].sum().to_dict()  
+    inj_names = old_well_to_field_injection_ratio.keys() 
+        
+    new_well_to_field_inj_capacity_ratio = {}
+    new_well_to_field_inj_capacity_ratio_sum = 0.0 
+        
+    for inj_name in inj_names:
+        
+        new_well_to_field_inj_capacity_ratio[ inj_name ] = old_well_to_field_injection_ratio[inj_name] + pair_to_field_delta[inj_name]
+        new_well_to_field_inj_capacity_ratio_sum = new_well_to_field_inj_capacity_ratio[ inj_name ] + new_well_to_field_inj_capacity_ratio_sum 
+
+    # up to here is column AF in the example spreadsheet
+    # the columns AF and AE, however, are stores as dictionaries 
+    # Inj_Capacity_Norm
+    inj_capacity_norm = {} 
+    for inj_name in inj_names:
+        inj_capacity_norm[ inj_name ] = new_well_to_field_inj_capacity_ratio[ inj_name ] / new_well_to_field_inj_capacity_ratio_sum
+        
+    #print('#lets produce the first output: injectors_table_output')     
+    injectors_table_output = wells[ wells['NAME'].isin(injector_names) ].copy() 
+    injectors_table_output['CAPACITY_FRACTION'] = injectors_table_output['NAME'].apply( lambda name: inj_capacity_norm[ name ]  )
+    injectors_table_output['INJECTION_TARGET'] = injectors_table_output['CAPACITY_FRACTION'] * input_data['injection_capacity']
+    injectors_table_output['DELTA_RATE'] = injectors_table_output['INJECTION_TARGET']  - injectors_table_output['LIQUID_RATE']
+            
+    cols = ['NAME','TYPE','LIQUID_RATE','RATE_FRACTION','CAPACITY_FRACTION','INJECTION_TARGET','DELTA_RATE']
+    injectors_table_output = injectors_table_output[ cols ]
+          
+    return injectors_table_output
+ 
+ 
+
+    
+@app.route("/apply_strategy", methods=["POST"])
+def apply_strategy():
+    sim_params   =  request.get_json()
+    
+    print('[apply_strategy]')
+    print( sim_params )
+    pfm_project_name = pfm_config['project_name']
+    pfm_study_name   = sim_params['pfm_study_name']
+    print( pfm_project_name )
+    print( pfm_study_name )
+    print( '------------------------------------')
+        
+    storage = DataikuLocalFolderConnector( pfm_config )
+    path = storage.study_folder_path( pfm_project_name , pfm_study_name ) 
+    
+    
+    strategy_params = get_default_pfm_parameters()
+    strategy_params.update( sim_params['pfm_strategy'] )
+    if sim_params['save_strategy'] is True:
+        print('saving strategy')
+        storage.upload_binary_data( path + '//strategy.json', json.dumps(strategy_params))
+
+    #get the pairs and wells as we need those as well to generate the pfm injection targets
+    pairs_df = storage.read_csv( path + '//pairs.csv', parse_dates=False, nrows = None )
+    wells_df = storage.read_csv( path + '//wells.csv', parse_dates=False, nrows = None )
+    
+    
+    new_pairs, summary_pairs = get_pfm_injection_estimates_v5( wells_df, pairs_df, strategy_params ) 
+  
+    print('--------summary_pairs-----------')
+    print( summary_pairs )
+    print('--------------------------------')
+    return jsonify({"strategy_summary":  summary_pairs })
+   
+
+        
+    '''
+    #get the pairs and wells as we need those as well to generate the pfm injection targets
+    pairs = storage.read_csv( path + '//pairs.csv', parse_dates=False, nrows = None )
+    wells = storage.read_csv( path + '//wells.csv', parse_dates=False, nrows = None )
+    
+    print( pairs )
+    print( wells )    
+        
+    print('apply_strategy')
+    print( strategy_params )
+    
+    injectors_table_output = get_pfm_injection_estimates( pairs, wells, strategy_params )
+
+    print( injectors_table_output)
+    '''
+    
+    
+    
+    
+   
+
+
+
+
+
+def generate_pfm_input_from_crm_case( historical_koval_crm, 
+    historical_koval_rates, historical_liquid_crm, 
+    historical_liquid_rates,
+    injectors_liquid_rates, 
+    end_of_history_date = None ): 
+    '''
+    The purpose of this function is to receive a study name, and produce as output the wells and pairs 
+    tables theat PFM will use to compute the new target injection rates.
+    
+    the inputs for this function are the results of a CRM simulation + the injection data 
+    namely:
+    
+    typically stored as: 
+    
+    historical_koval_crm ---historical_koval_crm.csv  
+    historical_koval_rates  ---historical_koval_rates.csv
+    
+    historical_liquid_crm---historical_liquid_crm.csv
+    proucers_liquid_rates---historical_liquid_rates.csv 
+    
+    injectors_liquid_rates  ---injectors.csv
+    
+    '''
+    '''
+    historical_koval_crm
+    historical_koval_rates
+    historical_liquid_crm
+    producers_liquid_rates
+    injectors_liquid_rates
+    '''
+    producers_liquid_rates = historical_liquid_rates
+    
+    PRODUCER_LIQUID_VOLUME_COL =find_columns( historical_liquid_rates.columns, LIQUID_PRODUCTION_KEYS)[0] + '_sim'
+    WATER_FRACTION_COL = find_columns( historical_koval_rates.columns, WATER_PRODUCTION_FRACTION_KEYS)[0] + '_sim'
+    INJECTION_VOLUME_COL = find_columns( injectors_liquid_rates.columns, WATER_INJECTION_KEYS)[0]
+    
+    #print('INJECTION_VOLUME_COL',INJECTION_VOLUME_COL)
+    #print('PRODUCER_LIQUID_VOLUME_COL',PRODUCER_LIQUID_VOLUME_COL)
+    #print('WATER_FRACTION_COL',WATER_FRACTION_COL)
+    
+  
+    
+    #step 1
+    #Fetch the study data and filter out the wells for which we dont have historical_koval_crm
+    #koval model parameters: stores the producers with koval andf koval paameters 
+    
+    producer_names = list( historical_koval_crm['PRODUCER'].unique() ) 
+    #print( producer_names )
+
+    #crm model parameters. Also, keep only the data for which koval is apparently available 
+    #stores the crm parameters for pairs with or without koval from  here we get the injetors 
+    
+    historical_liquid_crm = historical_liquid_crm[ historical_liquid_crm['PRODUCER'].isin(producer_names) ]
+    injector_names = list( historical_liquid_crm['INJECTOR'].unique()) 
+    #print( injector_names )
+
+ 
+    # lets now create the wells table, for that we need a rate and for that we need a rate 
+    #NAME  TYPE  LIQUID_RATE
+    #P4PROD2193.7
+    #I1INJ 1359.2
+    #P3PROD 752.4
+    #P2PROD 532.4
+    #I4INJ  911.0
+
+    #get the end-of-history rates for the producers. The injectors are only in the input data 
+    
+    producers_liquid_rates = producers_liquid_rates[ producers_liquid_rates['NAME'].isin(producer_names)].copy()
+    producers_liquid_rates['DATE'] = pd.to_datetime( producers_liquid_rates['DATE'] )
+    
+    
+    producers_liquid_rates = pd.pivot_table( producers_liquid_rates, fill_value=0.0, values = PRODUCER_LIQUID_VOLUME_COL, columns='PRODUCER',index='DATE')
+    producers_liquid_rates = producers_liquid_rates.reset_index( ).sort_values( by = 'DATE', ascending=True )# #ses tghe date as a column, easier to manage 
+
+    
+
+    
+    if end_of_history_date is None: 
+        _date1 = producers_liquid_rates['DATE'].max()
+        _date2 = historical_koval_rates['DATE'].max()
+        end_of_history_date = min( _date1, _date2 )
+        print('end of history guesses as ', end_of_history_date)
+
+        
+
+
+        
+    producers_liquid_rates = producers_liquid_rates[producers_liquid_rates['DATE'] >= end_of_history_date ]#.iloc[0,:]#[producers_with_koval]
+    
+    
+    injectors_liquid_rates['DATE'] = pd.to_datetime( injectors_liquid_rates['DATE'] )
+  
+    
+    injectors_liquid_rates = pd.pivot_table( injectors_liquid_rates[ injectors_liquid_rates['NAME'].isin( injector_names)], 
+                                            fill_value=0.0, values = INJECTION_VOLUME_COL, 
+                                            columns='NAME',index='DATE').reset_index().sort_values( by = 'DATE', ascending=True )
+   
+    
+    injectors_liquid_rates = injectors_liquid_rates[injectors_liquid_rates['DATE'] >= end_of_history_date ]#.iloc[0,:]#[producers_with_koval]
+
+  
+    
+    
+    # lets merge them both by date so the non-available rates get a zero. Note that an entire df might be zero 
+    merged_rates = pd.merge( left=producers_liquid_rates, right=injectors_liquid_rates, 
+    left_on='DATE', right_on='DATE', how='left').fillna( 0.0 )
+    
+    first_row = merged_rates.iloc[0,:] #this is date, p1,p2,....i1,i2,....
+    reference_date = first_row['DATE']
+    producer_rates = first_row[producer_names]#pd.DataFrame( first_row[producer_names] ).reset_index()#, colums=['NAME','LIQUID_RATE'] )
+    injector_rates = first_row[injector_names]#pd.DataFrame( first_row[injector_names] )#, colums=['NAME','LIQUID_RATE'] )
+    
+    #print( 'The injection rates at the selected end-of-history are ')
+    #print( injector_rates )
+    #print() 
+    
+    wels_df = pd.concat( [
+    pd.DataFrame( {'NAME': producer_rates.index, 'LIQUID_RATE': producer_rates. values, 'TYPE': 'PROD' }),
+    pd.DataFrame( {'NAME': injector_rates.index, 'LIQUID_RATE': injector_rates.values, 'TYPE': 'INJ' })
+    ], axis = 0 )
+    
+    #print('--------wells_df---------')
+    #print( wels_df )  
+    #print('-------------------------')
+    
+    
+    # --------  now we need the pairs-df --------------- 
+    # which is similar to the historical_liquid_crm  
+    # but we need the injection efficiency, which in turn depends on the watercut. We need the 
+    # watercut for the producers at the referfence date. That will be weighted by the injector allocation
+    # for ach pair  
+    historical_koval_rates = historical_koval_rates[ historical_koval_rates['PRODUCER'].isin( producer_names) ]
+    historical_koval_rates['DATE'] = pd.to_datetime( historical_koval_rates['DATE'] )
+    historical_koval_rates = pd.pivot_table( historical_koval_rates, fill_value=0.0, values = WATER_FRACTION_COL, columns='PRODUCER',index='DATE').reset_index().sort_values( by = 'DATE', ascending=True )
+    historical_koval_rates = historical_koval_rates[historical_koval_rates['DATE'] >= end_of_history_date ]#.iloc[0,:]#[producers_with_koval]
+    
+    first_row = historical_koval_rates.iloc[0,:] #this is date, p1,p2,....i1,i2,....
+    producer_water_cut = first_row[producer_names].to_dict()#pd.DataFrame( first_row[producer_names] ).reset_index()#, colums=['NAME','LIQUID_RATE'] )
+    #print( 'producer water cut', producer_water_cut  )
+    #print( 'injectors water rate', injector_rates.to_dict()  )
+    #print( 'producers liquid rate', producer_rates.to_dict()  )
+    
+    pairs_df = historical_liquid_crm[['INJECTOR','PRODUCER','ALLOCATION','TAU','TAUP','PRODUCTIVITY','Lo']].copy()
+
+    # we need the pair_inj_rate and pair_prod_rate.in this version, both are equal (incompressible flow?)
+    # both are lamda_pair * injector_rate
+    pairs_df['Pair_InjResvolRate'] = pairs_df['INJECTOR'].apply( lambda name: injector_rates[name] )* pairs_df['ALLOCATION']
+    pairs_df['Pair_ProdResvolRate'] = pairs_df['Pair_InjResvolRate']
+    
+    # we need th IE 
+    # in this version it is computed as: 
+    # IE = rate * lambda (1 - fw )/ ( sum( rate * lambda ) ) 
+    pairs_df['WCUT'] = pairs_df['PRODUCER'].apply( lambda x: producer_water_cut[x])
+    allocs_sum = {} 
+    for producer_name in producer_names:
+        allocs_sum[ producer_name ] = pairs_df[ pairs_df['PRODUCER'] == producer_name]['Pair_InjResvolRate'].sum()  
+        
+    pairs_df['IE'] = pairs_df['PRODUCER'].apply( lambda name: 1.0/allocs_sum[name]) * pairs_df['Pair_InjResvolRate']
+    pairs_df['IE'] = pairs_df['IE']  * (1.0 - pairs_df['WCUT'] ) 
+
+    pairs_df = pairs_df[ ['INJECTOR','PRODUCER','ALLOCATION','IE','Pair_InjResvolRate','Pair_ProdResvolRate','TAU','TAUP', 'WCUT']]
+    #print( 20*'--')
+    #print( pairs_df )
+    #print( 20*'--')
+
+
+    
+
+    '''
+    pairs_df['PRD_LIQ_RATE'] = pairs_df['PRODUCER'].apply( lambda x: producer_rates.to_dict()[x])
+    pairs_df['INJ_LIQ_RATE'] = pairs_df['INJECTOR'].apply( lambda x: injector_rates.to_dict()[x])
+    pairs_df['WCUT'] = pairs_df['PRODUCER'].apply( lambda x: producer_water_cut[x])
+
+    pairs_df['TEMP'] = pairs_df['INJ_LIQ_RATE'] * pairs_df['ALLOCATION']
+    for producer_name in producer_names:
+    allocs_sum[ producer_name ] = pairs_df[ pairs_df['PRODUCER'] == producer_name]['TEMP'].sum()  
+    pairs_df['IE'] = pairs_df['PRODUCER'].apply( lambda x: (1.0 - producer_water_cut[x])/allocs_sum[x] )
+    pairs_df['IE'] = pairs_df['IE'] * pairs_df['TEMP']
+    # IE = rate * lambda (1 - fw )/ ( sum( rate * lambda ) )  
+    
+    pairs_df = pairs_df[['INJECTOR','PRODUCER','ALLOCATION',  'PRD_LIQ_RATE','INJ_LIQ_RATE', 'IE','WCUT','TAU','TAUP','PRODUCTIVITY','Lo']]
+    ''' 
+    
+    return wels_df, pairs_df, injector_rates, end_of_history_date
+
+
+
+def webapp_backend_generate_pfm_input_tables( ui_params ):
+    
+    project_name = ui_params['project_name']
+    study_name   = ui_params['study_name']
+    subzone_name = ui_params['subzone_name']
+    
+    print( 'project_name',project_name, 'study_name', study_name, 'subzone_name', subzone_name)
+    
+    end_of_history_date  = ui_params['date'] if 'date' in ui_params else None
+    if not end_of_history_date is None and len( end_of_history_date ) < 6:
+        end_of_history_date = None 
+        
+    #print('----------get_wells_pairs_tables-------------')
+    #print( 'project_name',project_name)
+    #print( 'study_name',study_name)
+    #print( 'subzone_name',subzone_name)
+    #print( 'end_of_history_date',end_of_history_date)
+    
+    storage = KOCDataikuLocalStorageConnector( ui_params )
+    storage.args['project_name'] = project_name
+
+    ############################################
+    #print('----------fetching data-------------')
+    
+    (historical_koval_crm, 
+     historical_koval_rates, 
+     historical_liquid_crm, 
+     historical_liquid_rates, 
+     injectors_liquid_rates, 
+     producers_df, 
+     locations_df ) = storage.fetch_study_required_data_for_pfm( study_name, subzone_name )
+    
+    #print( 'producers',  historical_liquid_rates['PRODUCER']. unique() )
+    
+    
+    study_data = {'historical_koval_crm':historical_koval_crm, 
+     'historical_koval_rates':historical_koval_rates, 
+     'historical_liquid_crm':historical_liquid_crm, 
+     'historical_liquid_rates':historical_liquid_rates, 
+     'injectors_liquid_rates':injectors_liquid_rates, 
+     'producers_df':producers_df, 
+     'locations_df':locations_df } 
+    
+    # this is a patch added for convenience to plot stuff later.
+    # it adds the wartercut series to  the historical_liquid_rates
+    x =  study_data['historical_liquid_rates']
+    x['KEY'] = x['DATE'].astype(str )  + x['PRODUCER']
+    y = study_data['historical_koval_rates']
+    y['KEY'] = y['DATE'].astype(str )  + y['PRODUCER']
+    study_data['historical_liquid_rates'] = pd.merge( left = x, right = y[['WATER_FRACTION','WATER_FRACTION_sim', 'KEY']], 
+           left_on = 'KEY', right_on = 'KEY', how = 'left' ).tail(50)
+    
+    
+    
+    ###########################################
+
+    ###########################################
+    #print('----------returning tables-------------')
+    (wells_df, 
+     pairs_df, 
+     current_injection_rates,
+     date      
+    ) = generate_pfm_input_from_crm_case( historical_koval_crm,historical_koval_rates,historical_liquid_crm, historical_liquid_rates, injectors_liquid_rates,end_of_history_date )
+    
+    
+    #historical_koval_crm = pd.merge( left = historical_koval_crm, right = pairs_df[['PRODUCER','WCUT']], 
+    #                                 left_on = 'PRODUCER', right_on='PRODUCER', how='inner')
+
+    pairs_df = pd.merge( right = historical_koval_crm[['VP','KVAL','WO','FO','PRODUCER','SUBZONE']], 
+    left = pairs_df, 
+    left_on = 'PRODUCER', right_on='PRODUCER', how='inner')
+
+    pairs_df['Pair_VRR'] = pairs_df['Pair_InjResvolRate'] / pairs_df['Pair_ProdResvolRate'] 
+    #pairs_df = pairs_df[['INJECTOR','PRODUCER','ALLOCATION','IE','Pair_InjResvolRate','Pair_ProdResvolRate','Pair_VRR','SUBZONE']]
+    
+    return (wells_df, 
+            pairs_df, 
+            current_injection_rates, 
+            date, 
+            study_data)
+
+
+
+
+def build_response(data    = None, 
+                   message = None,
+                   code    = 200 ):
+    
+    response = {}
+    if data is not None: response['data'] = data 
+    if message is not None: response['message'] = message 
+        
+    r =  jsonify( response )
+    r.headers.add("Access-Control-Allow-Origin", "*")
+    return r    
+
+
+    
+@app.route("/create_input_from_crm_project", methods=["POST"])
+def create_input_from_crm_project():
+    '''
+    params: crm project name, study name, subzone name + end-of-history
+    
+    output: pairs, wells tables + end-of-history used
+    
+    Creates the wells and pairs tables
+    Save these as part of the project 
+    returns the tables to be shown in the UI
+    together with the -end-of-history- used. 
+    
+    '''
+    
+    # create the pfm project if it doesnt exist 
+    storage = DataikuLocalFolderConnector( pfm_config )
+    project_name = pfm_config['project_name']
+    storage.create_project(  project_name )
+    
+    # create the pfm study folder if it doesnt exist 
+    study_name   =  request.get_json()['pfm_study_name']
+    storage.create_study( project_name, study_name, description = None, overwrite = True )
+    
+    
+    # now use the pfm library to generate wells, pairs and date 
+    ui_sim_params = request.get_json()
+    ui_sim_params.update(crm_config)
+    
+    print('-----------------------------')
+    print('----------create_input_from_crm_project-------------------')
+    print( ui_sim_params )
+    print( project_name, study_name )
+    
+    
+    
+    #return to the ui 
+    (wells_df, 
+     pairs_df, 
+     current_injection_rates,
+     end_of_history_date, 
+     study_data) = webapp_backend_generate_pfm_input_tables( ui_sim_params )
+
+    pairs_df = pairs_df[['INJECTOR','PRODUCER','ALLOCATION','IE','Pair_InjResvolRate',
+                         'Pair_ProdResvolRate','Pair_VRR','SUBZONE']]
+    pairs_df = pairs_df.rename( {'INJECTOR':'Pair_Inj', 
+                                 'PRODUCER': 'Pair_Prod', 'ALLOCATION':'Pair_Inj_Alloc', 
+                       'IE':'Pair_IE', 'Pair_InjResvolRate': 'Pair_Inj_Rate', 
+                       'Pair_ProdResvolRate': 'Pair_Prod_Rate', 'SUBZONE':'Completion_ID'
+                      }, axis = 1 )
+    pairs_df['Pair_RE'] = 1.0
+    pairs_df['Pair_Prod_Alloc'] = pairs_df['Pair_Inj_Alloc']
+        
+    #Well Completion_ID  Type  Flow_Rate  Max_Rate  Min_Econ_Rate
+    wells_df = wells_df.rename( { 'NAME':'Name', 'TYPE':'Type', 'LIQUID_RATE': 'Flow_Rate'}, axis = 1 )
+    wells_df['Completion_ID'] = ui_sim_params['subzone_name']
+    
+    wells_df['Min_Econ_Rate'] = 0.1 
+    wells_df['Max_Rate'] = 80000.1 
+    
+    
+    
+    path = storage.study_folder_path( project_name, study_name )
+    storage.write_csv(path + '//pairs.csv', pairs_df)
+    storage.write_csv(path + '//wells.csv',  wells_df)
+    storage.write_csv(path + '//locations.csv', wells_df)
+    
+    
+    end_of_history_date = str(end_of_history_date)[0:10]
+    wells_json = wells_df.round(2).to_dict(into=OrderedDict, orient="records")
+    pairs_json = pairs_df.round(2).to_dict(into=OrderedDict, orient="records")
+    return jsonify({"wells": wells_json, "pairs": pairs_json, 'date': end_of_history_date})
+    
+    '''
+
+    
+    
+    project_name = ui_sim_params['crm_project_name']
+    study_name   = ui_sim_params['crm_study_name']
+    subzone_name = ui_sim_params['crm_subzone']
+    end_of_history_date  = ui_sim_params['crm_date'] if 'crm_date' in ui_sim_params else None
+    if not end_of_history_date is None and len( end_of_history_date ) < 6:
+        end_of_history_date = None 
+           
+    storage = KOCDataikuLocalStorageConnector( ui_sim_params )
+    storage.args['project_name'] = project_name
+ 
+    #this should return everythiong already filtered by subzone 
+    (historical_koval_crm, 
+     historical_koval_rates, 
+     historical_liquid_crm, 
+     historical_liquid_rates, 
+     injectors_liquid_rates,
+     producers_liquid_rates,
+     locations ) = storage.fetch_study_required_data_for_pfm( study_name, subzone_name )
+
+    wells_df, pairs_df, injector_rates, date = generate_pfm_input_from_crm_case(historical_koval_crm,historical_koval_rates,
+                                                                          historical_liquid_crm, historical_liquid_rates, 
+                                                                          injectors_liquid_rates,
+                                                                          end_of_history_date )
+    date = str(date)[0:10]
+    wells_json = wells_df.round(2).to_dict(into=OrderedDict, orient="records")
+    pairs_json = pairs_df.round(2).to_dict(into=OrderedDict, orient="records")
+    return jsonify({"wells": wells_json, "pairs": pairs_json, 'date': date})
+    ''' 
+    
+    
+    
+    
+    
+    data = {'project_names': 'project_names' }
+    return jsonify( data )
+
+
+@app.route("/retrieve_crm_projects", methods=["GET"])
+def retrieve_crm_projects():
+
+    # list crm projects route 
+    storage = KOCDataikuLocalStorageConnector( crm_config )
+    project_names = storage.list_projects()
+    
+    studies = {}
+    subzones = {} 
+    for name in project_names:
+        storage.args['project_name'] = name
+
+        data = storage.list_project_studies_with_koval( name  )
+        project_studies = [item[0] for item in data ]
+
+        if len(project_studies)>0:
+            studies[name] = project_studies
+
+            for study_name in project_studies:
+                historical_koval_crm = storage.load_historical_koval_crm( study_name )
+                rmus = historical_koval_crm['SUBZONE'].unique()#[0]
+                subzones[study_name]= rmus.tolist()
+
+        project_names = list( studies.keys()) 
+
+
+    data = {'project_names': project_names, 'studies': studies, 'subzones': subzones }
+    return jsonify( data )
+
+
+@app.route("/retrieve_study", methods=["POST"])
+def retrieve_study():
+
+    sim_params = request.get_json()
+    sim_params.update(pfm_config)
+    study_name = sim_params['study_name']
+    project_name = pfm_config['project_name']
+    #dataset_name = pfm_config['dataset_name']
+    
+    
+    storage = DataikuLocalFolderConnector( sim_params )
+    
+    # read the pairs table 
+    base_path = storage.study_folder_path( project_name, study_name )  
+    pairs = storage.read_csv( base_path + '//pairs.csv', parse_dates=False, nrows = None )
+    
+    # read the wells table 
+    wells = storage.read_csv( base_path + '//wells.csv', parse_dates=False, nrows = None )
+    
+    # read the locations table 
+    locations = storage.read_csv( base_path + '//locations.csv', parse_dates=False, nrows = None )
+    
+    # read the strategy file or create (and save) one if none is found 
+    path = storage.study_folder_path( project_name , study_name ) 
+    strategy_dict = storage.read_json( path + '//strategy.json' )
+    if not strategy_dict: 
+        strategy_dict = get_default_pfm_parameters()
+        storage.upload_binary_data( path + '//strategy.json', json.dumps(strategy_dict))
+
+
+    data = {
+        'wells': wells.to_dict(orient='records'),
+        'pairs': pairs.to_dict(orient='records'),
+        'locations': locations.to_dict(orient='records'),
+        'strategy': strategy_dict
+    }
+    
+    
+    
+    return jsonify(data)
+    
+    
+    data = {'data': study_name }
+    return jsonify( data )
+
+    
+@app.route("/list_studies", methods=["GET"])
+def list_studies():
+    project_name = pfm_config['project_name']
+    dataset_name = pfm_config['dataset_name']
+    storage = DataikuLocalFolderConnector( pfm_config )
+    study_names = storage.list_project_studies( project_name )
+    print( study_names )
+
+    data = {'data': study_names }
+    return jsonify( data )
+
+    
+@app.route("/upload_files", methods=["POST"])
+def upload_files():
+
+    
+    study_name = request.form.get('study_name')
+    project_name = pfm_config['project_name']
+    dataset_name = pfm_config['dataset_name']
+    
+    files = request.files
+    from_ui = {
+                  'pairs.csv': files.get('pairs'),
+                  'wells.csv': files.get('wells'),
+                  'locations.csv': files.get('locations')
+    }
+    
+    storage = DataikuLocalFolderConnector( pfm_config )
+    
+    # create the project if it doesnt exist 
+    storage.create_project( project_name )
+    
+    # create the study folder if it doesnt exist 
+    storage.create_study( project_name, study_name, description = None, overwrite = True )
+    
+    
+    # delete any previous datasets in the study -if any- 
+    #datasets = storage.list_project_datasets( project_name )
+    #for dataset in datasets:
+    #    storage.delete_dataset( project_name, dataset_name )
+        
+    # upload the pairs, wells and locations in the dataset folder of the tudy in question
+    path = storage.study_folder_path( project_name, study_name )
+    print('path', path )    
+        
+        
+    try:
+        storage.upload_binary_data(path + '//pairs.csv', from_ui['pairs.csv'])
+        storage.upload_binary_data(path + '//wells.csv',  from_ui['wells.csv'])
+        storage.upload_binary_data(path + '//locations.csv', from_ui['locations.csv'])
+        
+        #read them and return them to the user for double-ckeking 
+        pairs_df = storage.read_csv( path + '//pairs.csv',parse_dates=False, nrows = None )
+        wells_df = storage.read_csv( path + '//wells.csv',parse_dates=False, nrows = None )
+        
+        wells_json = wells_df.round(2).to_dict(into=OrderedDict, orient="records")
+        pairs_json = pairs_df.round(2).to_dict(into=OrderedDict, orient="records")
+        return jsonify({"wells": wells_json, "pairs": pairs_json})
+
+        
+
+        #response = build_response(data = None, 
+        #           message = 'Project updated.\nThe content in uploaded files was not QC-ed',
+        #           code    = 200 )
+        #return response
+    
+
+    except Exception as e:
+        return build_error_response(error= str(e), code=500 )
+    
+    
+    
+    response = build_response( message ='All good. Data uploaded', code = 200 )
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+    '''
+    storage = DataikuLocalFolderConnector( config )
+    storage.create_project( project_name )
+    #delete all previous datasets in the project 
+    datasets = storage.list_project_datasets( project_name )
+    for dataset in datasets:
+        storage.delete_dataset( 'Wara', dataset )
+            
+   
+    #storage.delete_dataset( project_name, dataset_name  )
+    storage.create_dataset( project_name, dataset_name  )
+    path = storage.dataset_folder_path( project_name, dataset_name )
+    
+    try:
+        storage.upload_binary_data(path+'//injectors.csv', from_ui['injectors.csv'])
+        storage.upload_binary_data(path+'//producers.csv',  from_ui['producers.csv'])
+        storage.upload_binary_data(path+'//locations.csv', from_ui['locations.csv'])
+
+        response = build_response(data = None, 
+                   message = 'Project updated.\nThe content in uploaded files was not QC-ed',
+                   code    = 200 )
+        return response
+    
+
+    except Exception as e:
+        return build_error_response(error= str(e), code=500 )
+    '''
+    
+	
+//pfm2
+
+from wf_lib.data.dataiku_local_folder_connector import KOCDataikuLocalStorageConnector
+from wf_lib.crm_definitions import * 
+from wf_lib.data.crm_data_utils import find_columns
+import pandas as pd 
+  
+
+
+def get_default_strategy():
+    strategy = {'pfm_strategy_name':'Default',
+            'strategy_type' : 'IE', 
+            'injection_capacity': 6150, 
+             #'min_efficiency': 0.0,
+             #'max_efficiency': 1.0,
+             'shape_weighting_curve': 2.0, 
+             'efficiency_range': 1.0,
+             'minimum_weight': -1.0,
+             'maximum_weight': 1.0    
+            }
+    return strategy 
+    
+def get_default_pfm_parameters():
+    return get_default_strategy()
+
+ 
+
+def get_pfm_injection_estimates_v5( wells_df, pairs_df, strategy ):
+        
+    #input_data = strategy 
+    #this basically reproduces Sanjoy's spreadsheet with the things we need and those we dont need.
+    
+    wells = wells_df.copy()
+    pairs = pairs_df.copy()
+    
+    # first find the unique injector and producer 
+    injector_names = sorted(list( set(pairs['Pair_Inj']) ))
+    injector_ids = { name:n + 1 for n,name in enumerate(injector_names) }
+    producer_names = sorted(list( set(pairs['Pair_Prod']) ))
+    producer_ids = { name:n + 1 for n,name in enumerate(producer_names) }
+        
+        
+    # IE_Times_Prod and RE_Times_Inj
+    pairs['IE_Times_Prod'] = (pairs['Pair_IE'] * pairs['Pair_Prod_Rate'])#.round(0)
+    pairs['RE_Times_Inj']  = pairs['Pair_RE'] * pairs['Pair_Inj_Rate']
+    
+    # Pair_RE_Norm 
+    pairs['Pair_RE_Norm']  = pairs['Pair_RE'] / max( pairs['Pair_RE'] )
+    #pairs['IE_or_RE'] = pairs['Pair_IE'] if input_data['IE_or_RE'] == 'IE' else pairs['Pair_RE']
+        
+   
+    # Dopt_IE 
+    s = strategy['strategy_type'] #can be IE, RE, VRR 
+    pair_min, pair_max = pairs['Pair_'+s].min(), pairs['Pair_'+s].max()
+    if s == 'IE':  group_avg  = pairs['IE_Times_Prod'].sum()/pairs['Pair_Prod_Rate'].sum()
+    elif s == 'RE':  group_avg = pairs['RE_Times_Inj'].sum()/pairs['Pair_Inj_Rate'].sum()
+    elif s == 'VRR': group_avg = pairs['Pair_Inj_Rate'].sum()/pairs['Pair_Prod_Rate'].sum()
+    else:
+        raise ValueError('Unknown strategy type')
+    
+    half_range = min( group_avg, group_avg * strategy['efficiency_range'] )
+    min_range  = group_avg - half_range 
+    max_range  = group_avg + half_range 
+    min_eff, max_eff, avg_eff = min_range, max_range,  group_avg
+    # =IF(O57>$N$24,MIN(1,(O57-$N$24)/($N$23-$N$24)),MIN(1,($N$24-O57)/($N$24-$N$22)))
+    pairs['Dopt_IE'] = pairs['Pair_IE'].apply(lambda value: min(1,( value-group_avg)/(max_range-group_avg)) if value > group_avg else min(1,(group_avg-value)/(group_avg-min_range)) )
+    
+    # r22, r23 min weight, max weight 
+    # p24  =cvurve sghape 
+    # n22,n23, n24 = min, max, avg 
+    # P =  Dopt,
+    # O = IE    
+    # Pair_Weight
+     
+    Pair_Weight = [] 
+    wmin, wmax, p24 = strategy['minimum_weight'], strategy['maximum_weight'], strategy['shape_weighting_curve']
+ 
+    # =IF(O47>$N$24,1+$R$23*POWER(P47,$P$24),1+$R$22*POWER(P47,$P$24))
+    dopt = pairs['Dopt_IE'].values
+    for n,value in enumerate(pairs['Pair_IE'].values):
+        x = 1 + wmax * pow( dopt[n], p24) if value > group_avg else 1 + wmin * pow (dopt[n],p24)
+        Pair_Weight.append( x )   
+    pairs['Pair_Weight'] = Pair_Weight
+
+    pairs['Updated_Injection_Rate'] = pairs['Pair_Inj_Rate']  * pairs['Pair_Weight']
+    pairs['Delta_Injection'] = pairs['Updated_Injection_Rate'] - pairs['Pair_Inj_Rate']
+    pairs['Updated_Production_Rate'] = pairs['Pair_Weight']  * pairs['Pair_Prod_Rate'] 
+  
+    pairs['Updated_Oil_Production_Rate'] = pairs['Pair_Weight']  * pairs['IE_Times_Prod']
+    pairs['Delta_Oil'] = pairs['Updated_Oil_Production_Rate'] - pairs['IE_Times_Prod']
+    pairs['Delta_WH'] =  (pairs['Updated_Production_Rate'] - pairs['Updated_Oil_Production_Rate']) - ( pairs['Pair_Prod_Rate'] - pairs['IE_Times_Prod'])  #(U10-V10)-(K10-M10)
+
+    summary_pairs = pairs[['Pair_Inj_Rate','Pair_Prod_Rate','IE_Times_Prod',
+                            'RE_Times_Inj','Updated_Injection_Rate','Delta_Injection',
+                            'Updated_Production_Rate','Updated_Oil_Production_Rate',
+                            'Delta_Oil','Delta_WH'
+                            ]].sum(axis=0).to_dict()
+    summary_pairs['name'] = strategy['pfm_strategy_name']
+
+    x = summary_pairs['IE_Times_Prod'] if strategy['strategy_type'] == 'IE' else summary_pairs['RE_Times_Inj']
+    summary_pairs['Delta_WH'] = summary_pairs['Delta_Oil'] - x 
+
+    for key,value in summary_pairs.items():
+        try:
+            new_value = round( float(value),1)
+            summary_pairs[key] = new_value
+            print( key, ' is a number')
+        except:
+            pass 
+        
+
+    return pairs, summary_pairs 
+    # end of unconstrained.
+  
+    
+    
+    
+    '''
+    #IF(O47>$N$24,MIN(1,(O47-$N$24)/($N$23-$N$24)),MIN(1,($N$24-O47)/($N$24-$N$22)))
+    pairs['Dopt_IE'] = pairs['Pair_IE'].apply( lambda value: min(1,( value-P4)/(P3-P4)) if value > P4 else min(1,(P4-value)/(P4-P2)) )
+
+    #IF(P8>$P$4,1+$R$3*POWER(Q8,$P$5),1+$R$2*POWER(Q8,$P$5))
+    P5 = input_data['shape_weighting_curve']
+    P8,Q8 = pairs['IE_or_RE'].values, pairs['Dopt_IE'].values
+    wmin, wmax = input_data['minimum_weight'], input_data['maximum_weight']
+        
+    # Pair_Weight
+    Pair_Weight = [] 
+    for n,value in enumerate(P8):
+        x = 1 + wmax * pow( Q8[n], P5) if value > P4 else 1 + wmin * pow (Q8[n],P5)
+        Pair_Weight.append( x )   
+    pairs['Pair_Weight'] = Pair_Weight
+        
+    # next 6 columns 
+    pairs['Updated_Injection_Rate'] = pairs['Pair_Inj_Rate']  * pairs['Pair_Weight']
+    pairs['Delta_Injection'] = pairs['Updated_Injection_Rate'] - pairs['Pair_Inj_Rate']
+    pairs['Updated_Production_Rate'] = pairs['Pair_Weight']  * pairs['Pair_Prod_Rate'] 
+        
+    pairs['Updated_Oil_Production_Rate'] = pairs['Pair_Weight']  * pairs['IE_Times_Prod']
+    pairs['Delta_Oil'] = pairs['Updated_Oil_Production_Rate'] - pairs['IE_Times_Prod']
+    pairs['Delta_WH'] =  (pairs['Updated_Production_Rate'] - pairs['Updated_Oil_Production_Rate']) - ( pairs['Pair_ProdResvolRate'] - pairs['IE_Times_Prod'])  #(U10-V10)-(K10-M10)
+
+    # this finishes the left part of the PFM-Comp in Sanjoy's spreadsheet 
+    #here  
+    inj_ResvolRate_sum  = wells[ wells['W_Type'] == 'INJ' ]['W_ResvolRate'].sum()
+    prod_ResvolRate_sum = wells[ wells['W_Type'] == 'PROD' ]['W_ResvolRate'].sum()
+
+    #in Sanjoys spreadsheet this is W_InjectionFraction and W_ProductionFraction
+    wells['W_RateFraction'] = -1 
+    mask = wells['W_Type'] == 'INJ'
+    wells.loc[mask,'W_RateFraction'] = wells.loc[mask,'W_ResvolRate']  / inj_ResvolRate_sum
+
+    mask = wells['W_Type'] == 'PROD'
+    wells.loc[mask,'W_RateFraction'] = wells.loc[mask,'W_ResvolRate']  / prod_ResvolRate_sum
+
+    
+    names = wells[ 'W_Name' ].values 
+    rate_fraction = wells[ 'W_RateFraction' ].values 
+    name_rate_map = {} 
+    for n, name in enumerate(names):
+        name_rate_map[name] = rate_fraction[n] 
+        
+            
+    pairs['Old_Well_to_Field_InjectionRatio'] = pairs['Pair_Inj'].apply( lambda name: name_rate_map[name] )# lambda x: )
+    pairs['Old_Pair_to_Field_InjectionRatio'] = pairs['Old_Well_to_Field_InjectionRatio'] * pairs['Pair_InjAlloc']
+    pairs['Pair_to_Field_Delta'] = ( pairs['Pair_Weight'] - 1.0 ) * pairs['Old_Pair_to_Field_InjectionRatio'] 
+    pairs['New_Pair_to_Field_InjectionRatio'] = pairs['Old_Pair_to_Field_InjectionRatio'] + pairs['Pair_to_Field_Delta']
+        
+    # calculate New_Well_to_Field_Inj_Capacity_Ratio
+    # col AA in Sanjoys spreadsheet 
+    old_well_to_field_injection_ratio = pairs.groupby( ['Pair_Inj'] )['Old_Well_to_Field_InjectionRatio'].mean().to_dict()
+    pair_to_field_delta = pairs.groupby( ['Pair_Inj'] )['Pair_to_Field_Delta'].sum().to_dict()  
+    inj_names = old_well_to_field_injection_ratio.keys() 
+        
+    new_well_to_field_inj_capacity_ratio = {}
+    new_well_to_field_inj_capacity_ratio_sum = 0.0 
+    for inj_name in inj_names:
+        
+        new_well_to_field_inj_capacity_ratio[ inj_name ] = old_well_to_field_injection_ratio[inj_name] + pair_to_field_delta[inj_name]
+        new_well_to_field_inj_capacity_ratio_sum = new_well_to_field_inj_capacity_ratio[ inj_name ] + new_well_to_field_inj_capacity_ratio_sum 
+
+    # up to here is column AF in the example spreadsheet
+    # the columns AF and AE, however, are stores as dictionaries 
+    # Inj_Capacity_Norm
+    inj_capacity_norm = {} 
+    for inj_name in inj_names:
+        inj_capacity_norm[ inj_name ] = new_well_to_field_inj_capacity_ratio[ inj_name ] / new_well_to_field_inj_capacity_ratio_sum
+        
+    #print('#lets produce the first output: injectors_table_output')     
+    injectors_table_output = wells[ wells['W_Name'].isin(injector_names) ].copy() 
+    injectors_table_output['Capacity_Fraction'] = injectors_table_output['W_Name'].apply( lambda name: inj_capacity_norm[ name ]  )
+    injectors_table_output['New_PFM_Target'] = injectors_table_output['Capacity_Fraction'] * input_data['injection_capacity']
+    injectors_table_output['DeltaRate'] = injectors_table_output['New_PFM_Target']  - injectors_table_output['W_ResvolRate']
+            
+    #print( injectors_table_output )
+    #print( injectors_table_output['W_ResvolRate'].sum() ) 
+    injectors_table_output.to_csv('injectors_table_output.csv',index=False)
+   
+    return injectors_table_output
+    '''
+ 
+
+
+
+
+
+
+
+
