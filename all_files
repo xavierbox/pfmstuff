@@ -1,4 +1,3 @@
-
 //html
 <!-- link rel="stylesheet" href="/static/public/styles/1.0.0/dku-styles.css" / -->
 
@@ -214,13 +213,13 @@ V2
     <p></p>
     <div id = 'strategy-container' class='card'>
     <h5>Strategy</h5>
-        <details>
+       
         <div class="container-fluid ">
 
             <div id="inputForm">
 
 
-                <div class="row mb-3">
+                <div class="row xxxxmb-3">
                     <label for="pfm_study_name" class="col-sm-3 col-form-label">PFM Strategy Name:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="pfm_strategy_name" name="pfm_strategy_name" value="PFMStudy">
@@ -244,6 +243,18 @@ V2
                         <input type="number" class="form-control" id="injection_capacity" name="injection_capacity" value="6150.00">
                     </div>
                 </div>
+                    
+                    
+              <div>
+                <input id='save-strategy-checkbox' type='checkbox' style='margin-right:10px'/>
+                    <label>Save strategy </label> 
+                    <div> 
+                        <button id='apply-strategy'  class="btn btn-primary">Apply
+                        </button>
+                    </div> 
+                </div>    
+                    <hr></hr>
+                    
 
                 <!-- div class="row mb-3" style='display:none'>
                     <label for="vrr_target" class="col-sm-3 col-form-label">VRR Target:</label>
@@ -377,14 +388,7 @@ V2
             </div>
 
 
-                 <div>
-                <input id='save-strategy-checkbox' type='checkbox' style='margin-right:10px'/>
-                    <label>Save strategy </label> 
-                     <br></br>
-                    <div> 
-                        <button id='apply-strategy'  class="btn btn-primary">Apply
-                        </button>
-                    </div> </div>            
+           
 
 
 
@@ -395,9 +399,14 @@ V2
       
     <div id = 'strategy-results-container'  class="container-fluid ">      
         <h5>Results Summary</h5>
+        <details>
         <div   id='strategy_summary_table'></div> 
-    </div>  
+        <div id="strategy_well_details_container"></div>
+    </details>
+            </div>  
  
+    <p></p>
+    <hr></hr>
 
  
         
@@ -447,7 +456,19 @@ let selected_option = -1
         
 </script>
          
-//css 
+             
+        
+                
+                
+                
+                
+                
+                
+                
+
+
+
+//css
 /*
     This imports default colors, you can use them with the syntax `var(--variable-name)`.
     Example:
@@ -532,23 +553,27 @@ t333333r:hover {background-color: lightgrey;}
 
     table {
       border-collapse: collapse;
-      width: 100%;
-      margin: 20px 0;
+      xxwidth: 70%;
+      margin-left: 20px ;
+      margin-right: 20px ;
+        
       font-family: Arial, sans-serif;
       font-size: 14px;
-      text-align: center;
+      text-align: right;
       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     th, td {
       border: 1px solid #ddd;
-      padding: 6px; /* Reduced padding by factor of 2 */
+      
+      padding: 3px; /* Reduced padding by factor of 2 */
     }
 
     th {
       background-color: #007bff;
       color: white;
       font-weight: bold;
+      padding:10px;
     }
 
     tr:nth-child(even) {
@@ -561,7 +586,7 @@ t333333r:hover {background-color: lightgrey;}
 
     /* Bar Styles */
     .bar {
-      height: 10px;
+      height: 12px;
       display: inline-block;
       margin-left: 5px;
       border-radius: 5px;
@@ -577,8 +602,12 @@ t333333r:hover {background-color: lightgrey;}
 
     /* Alignments */
     td.change {
-      text-align: left; /* Align text and bar at the left */
+      text-align: left; /* Align text at the left */
+      display: flex; /* Use flexbox for bar alignment */
+      align-items: center; /* Vertically center text and bar */
+      gap: 5px; /* Add spacing between the text and bar */
     }
+
 
     /* Responsive Table */
     @media screen and (max-width: 768px) {
@@ -586,9 +615,11 @@ t333333r:hover {background-color: lightgrey;}
         font-size: 12px;
       }
       th, td {
-        padding: 4px; /* Reduced padding further for smaller screens */
+        padding: 8px; /* Reduced padding further for smaller screens */
       }
     }
+
+
 
 //js
             
@@ -600,74 +631,78 @@ t333333r:hover {background-color: lightgrey;}
     let pfm_locations = undefined  
     let pfm_strategy = undefined;
       
-function create_strategy_summary_table( input ){
-    // Create the table and append it to the document body
-    const tableData = [
-    ["Unconstrained Strategy Results",input.name],
-    ["Oil gain (rb/d)", input['Delta_Oil'], 
-     "Rec WI rate (rb/d)", input['Updated_Injection_Rate'] ],
-    [
-     "Water redu. (rb/d)", input['Delta_WH'], "New VRR", 1.0],
-    ["Oil Prd Rate (rb/d)", input['Updated_Oil_Production_Rate'],
-     "Liq Prd Rate (rb/d)", input['Updated_Production_Rate'] ],
-    ["Water Prd Rate (rb/d)", Math.round(input['Updated_Production_Rate']-input['Updated_Oil_Production_Rate'],2), "", ""]
-    ]
+    function style_table(table){
+        
+        
+        table.classList.add('table')
+        table.classList.add('table-bordered')
+        table.style.borderCollapse = "collapse";
+        //table.style.margin = "20px";
+        //table.style.width = "100%"; //"600px";
+        //table.style.textAlign = "right";
+        
+    }
 
-    const table = document.createElement("table");
-    table.classList.add('table')
-    table.classList.add('table-bordered')
-    
-    
+    function create_strategy_summary_table( input ){
+        // Create the table and append it to the document body
+        const tableData = [
+        ["Unconstrained Strategy Results",input.name],
+        ["Oil gain (rb/d)", input['Delta_Oil'], 
+         "Rec WI rate (rb/d)", input['Updated_Injection_Rate'] ],
+        [
+         "Water redu. (rb/d)", input['Delta_WH'], "New VRR", 1.0],
+        ["Oil Prd Rate (rb/d)", input['Updated_Oil_Production_Rate'],
+         "Liq Prd Rate (rb/d)", input['Updated_Production_Rate'] ],
+        ["Water Prd Rate (rb/d)", Math.round(input['Updated_Production_Rate']-input['Updated_Oil_Production_Rate'],2), "", ""]
+        ]
 
-    
-    
-    table.style.borderCollapse = "collapse";
-    table.style.margin = "20px";
-    //table.style.width = "600px";
-    table.style.textAlign = "right";
+        const table = document.createElement("table");
+        style_table( table )
+        table.style.textAlign = "right";
 
-    // Apply table styles
-    const applyCellStyle = (cell, isHeader = false) => {
-    //cell.style.border = "0px solid grey";
-    cell.style.padding = "10px";
-    cell.style.fontWeight = isHeader ? "bold" : "normal";
-    if(isHeader) { cell.style.backgroundColor = 'blue'; cell.style.color = 'white' }
-    };
+        // Apply table styles
+        const applyCellStyle = (cell, isHeader = false) => {
+        //cell.style.border = "0px solid grey";
+        cell.style.padding = "10px";
+        cell.style.fontWeight = isHeader ? "bold" : "normal";
+        //if(isHeader) { cell.style.backgroundColor = 'blue'; cell.style.color = 'white' }
+        };
 
-    // Populate the table
-    tableData.forEach((row, rowIndex) => {
-    const tr = document.createElement("tr");
-
-
-    row.forEach((cellText, colIndex) => {
-        const cell = rowIndex === 0 ? document.createElement("th") : document.createElement("td");
-        cell.textContent = cellText;
-
-        if (rowIndex === 0)
-        cell.colSpan = 2; 
-
-        applyCellStyle(cell, rowIndex === 0);
-        // Highlight specific cells
-        if (rowIndex > 0) {
-        if ((rowIndex === 1 && colIndex === 1) || (rowIndex === 3 && colIndex === 3)) {
-            cell.style.color = "green";
-        }
-        if (rowIndex === 2 && colIndex === 1) {
-            cell.style.color = "red";
-        }
-        if (rowIndex === 3 && colIndex === 1) {
-            cell.style.color = "orange";
-        }
-        }
-        tr.appendChild(cell);
-    });
-    table.appendChild(tr);
-    });
+        // Populate the table
+        tableData.forEach((row, rowIndex) => {
+        const tr = document.createElement("tr");
 
 
+        row.forEach((cellText, colIndex) => {
+            const cell = rowIndex === 0 ? document.createElement("th") : document.createElement("td");
+            cell.textContent = cellText;
 
-    return table 
-}
+            if (rowIndex === 0)
+            cell.colSpan = 2; 
+
+            applyCellStyle(cell, rowIndex === 0);
+            // Highlight specific cells
+            if (rowIndex > 0) {
+            if ((rowIndex === 1 && colIndex === 1) || (rowIndex === 3 && colIndex === 3)) {
+                cell.style.color = "green";
+            }
+            if (rowIndex === 2 && colIndex === 1) {
+                cell.style.color = "red";
+            }
+            if (rowIndex === 3 && colIndex === 1) {
+                cell.style.color = "orange";
+            }
+            }
+            tr.appendChild(cell);
+        });
+        table.appendChild(tr);
+        });
+
+
+
+        return table 
+    }
+
 
 
 
@@ -854,6 +889,55 @@ function create_strategy_summary_table( input ){
         
     }
 
+  function create_strategy_well_details_table(data) {
+      // Create the table element
+      const table = document.createElement("table");
+
+      // Create the table header row
+      //const headers = Object.keys(data[0]);
+      const headers = ["Well", "Type",  "Change", 'Completion_ID',...Object.keys(data[0]).filter(key => key !== "Completion_ID" && key !== "Type" && key !== "Well" && key !== "Change")];
+
+      const headerRow = document.createElement("tr");
+      headers.forEach(header => {
+        const th = document.createElement("th");
+        th.textContent = header;
+        headerRow.appendChild(th);
+      
+      });
+       
+      table.appendChild(headerRow);
+
+      // Populate the table rows
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+          
+      
+        headers.forEach(header => {
+          const td = document.createElement("td");
+
+          // Add text content for all columns except "Change"
+          if (header !== "Change") {
+            td.textContent = row[header];
+          } else {
+            // Add numeric value and bar visualization for "Change"
+            td.classList.add("change");
+            td.textContent = row[header];
+            const bar = document.createElement("div");
+            bar.classList.add("bar");
+            bar.style.width = `${Math.abs(row[header]) / 30}px`; // Scale the bar size
+            bar.classList.add(row[header] < 0 ? "red" : "green");
+            td.appendChild(bar);
+          }
+
+          tr.appendChild(td);
+        });
+        table.appendChild(tr);
+      });
+
+      // Return the table element
+      return table;
+    }
+
 
 
     Id('apply-strategy').addEventListener('click', (event) => {
@@ -886,6 +970,13 @@ function create_strategy_summary_table( input ){
                     let summary_container = document.getElementById('strategy_summary_table') 
                     summary_container.innerHTML = "" 
                     summary_container.appendChild( table )
+            
+                    let strategy_well_details = data.wells_details;
+                    let wells_details_container =  document.getElementById('strategy_well_details_container')
+                    let well_details_table = create_strategy_well_details_table( strategy_well_details );
+                    wells_details_container.innerHTML = "" 
+                    wells_details_container.appendChild( well_details_table )
+            
             
                     //populate_pairs_wells_locations('wells-table', data.wells);
                     //populate_pairs_wells_locations('pairs-table', data.pairs);
@@ -1269,7 +1360,7 @@ $.getJSON(getWebAppBackendUrl('/first_api_call'), function(data) {
 });
 
 
-//python
+//py
 import dataiku
 import pandas as pd
 from collections import OrderedDict, defaultdict
@@ -1422,38 +1513,19 @@ def apply_strategy():
     wells_df = storage.read_csv( path + '//wells.csv', parse_dates=False, nrows = None )
     
     
-    new_pairs, summary_pairs = get_pfm_injection_estimates_v5( wells_df, pairs_df, strategy_params ) 
+    new_pairs, summary_pairs, wells_details = get_pfm_injection_estimates_v5( wells_df, pairs_df, strategy_params ) 
   
+    wells_details_dict = wells_details.round(2).to_dict(into=OrderedDict, orient="records")
     print('--------summary_pairs-----------')
-    print( summary_pairs )
+    print( wells_details.T )
     print('--------------------------------')
-    return jsonify({"strategy_summary":  summary_pairs })
+    return jsonify({"strategy_summary":  summary_pairs,
+                    "wells_details":wells_details_dict
+                    
+                   })
    
-
-        
-    '''
-    #get the pairs and wells as we need those as well to generate the pfm injection targets
-    pairs = storage.read_csv( path + '//pairs.csv', parse_dates=False, nrows = None )
-    wells = storage.read_csv( path + '//wells.csv', parse_dates=False, nrows = None )
-    
-    print( pairs )
-    print( wells )    
-        
-    print('apply_strategy')
-    print( strategy_params )
-    
-    injectors_table_output = get_pfm_injection_estimates( pairs, wells, strategy_params )
-
-    print( injectors_table_output)
-    '''
-    
-    
-    
-    
-   
-
-
-
+ 
+ 
 
 
 def generate_pfm_input_from_crm_case( historical_koval_crm, 
@@ -2033,9 +2105,9 @@ def upload_files():
     except Exception as e:
         return build_error_response(error= str(e), code=500 )
     '''
-    
-	
-//pfm2
+
+
+//lib
 
 from wf_lib.data.dataiku_local_folder_connector import KOCDataikuLocalStorageConnector
 from wf_lib.crm_definitions import * 
@@ -2061,8 +2133,198 @@ def get_default_pfm_parameters():
     return get_default_strategy()
 
  
-
 def get_pfm_injection_estimates_v5( wells_df, pairs_df, strategy ):
+        
+    #input_data = strategy 
+    #this basically reproduces Sanjoy's spreadsheet with the things we need and those we dont need.
+    
+    wells = wells_df.copy()
+    pairs = pairs_df.copy()
+    
+    # first find the unique injector and producer 
+    injector_names = sorted(list( set(pairs['Pair_Inj']) ))
+    injector_ids = { name:n + 1 for n,name in enumerate(injector_names) }
+    producer_names = sorted(list( set(pairs['Pair_Prod']) ))
+    producer_ids = { name:n + 1 for n,name in enumerate(producer_names) }
+        
+        
+    # IE_Times_Prod and RE_Times_Inj
+    pairs['IE_Times_Prod'] = (pairs['Pair_IE'] * pairs['Pair_Prod_Rate'])#.round(0)
+    pairs['RE_Times_Inj']  = pairs['Pair_RE'] * pairs['Pair_Inj_Rate']
+    
+    # Pair_RE_Norm 
+    pairs['Pair_RE_Norm']  = pairs['Pair_RE'] / max( pairs['Pair_RE'] )
+    #pairs['IE_or_RE'] = pairs['Pair_IE'] if input_data['IE_or_RE'] == 'IE' else pairs['Pair_RE']
+        
+   
+    # Dopt_IE 
+    s = strategy['strategy_type'] #can be IE, RE, VRR 
+    pair_min, pair_max = pairs['Pair_'+s].min(), pairs['Pair_'+s].max()
+    if s == 'IE':  group_avg  = pairs['IE_Times_Prod'].sum()/pairs['Pair_Prod_Rate'].sum()
+    elif s == 'RE':  group_avg = pairs['RE_Times_Inj'].sum()/pairs['Pair_Inj_Rate'].sum()
+    elif s == 'VRR': group_avg = pairs['Pair_Inj_Rate'].sum()/pairs['Pair_Prod_Rate'].sum()
+    else:
+        raise ValueError('Unknown strategy type')
+    
+    half_range = min( group_avg, group_avg * strategy['efficiency_range'] )
+    min_range  = group_avg - half_range 
+    max_range  = group_avg + half_range 
+    min_eff, max_eff, avg_eff = min_range, max_range,  group_avg
+    # =IF(O57>$N$24,MIN(1,(O57-$N$24)/($N$23-$N$24)),MIN(1,($N$24-O57)/($N$24-$N$22)))
+    pairs['Dopt_IE'] = pairs['Pair_IE'].apply(lambda value: min(1,( value-group_avg)/(max_range-group_avg)) if value > group_avg else min(1,(group_avg-value)/(group_avg-min_range)) )
+    
+    # r22, r23 min weight, max weight 
+    # p24  =cvurve sghape 
+    # n22,n23, n24 = min, max, avg 
+    # P =  Dopt,
+    # O = IE    
+    # Pair_Weight
+     
+    Pair_Weight = [] 
+    wmin, wmax, p24 = strategy['minimum_weight'], strategy['maximum_weight'], strategy['shape_weighting_curve']
+ 
+    # =IF(O47>$N$24,1+$R$23*POWER(P47,$P$24),1+$R$22*POWER(P47,$P$24))
+    dopt = pairs['Dopt_IE'].values
+    for n,value in enumerate(pairs['Pair_IE'].values):
+        x = 1 + wmax * pow( dopt[n], p24) if value > group_avg else 1 + wmin * pow (dopt[n],p24)
+        Pair_Weight.append( x )   
+    pairs['Pair_Weight'] = Pair_Weight
+
+    pairs['Updated_Injection_Rate'] = pairs['Pair_Inj_Rate']  * pairs['Pair_Weight']
+    pairs['Delta_Injection'] = pairs['Updated_Injection_Rate'] - pairs['Pair_Inj_Rate']
+    pairs['Updated_Production_Rate'] = pairs['Pair_Weight']  * pairs['Pair_Prod_Rate'] 
+  
+    pairs['Updated_Oil_Production_Rate'] = pairs['Pair_Weight']  * pairs['IE_Times_Prod']
+    pairs['Delta_Oil'] = pairs['Updated_Oil_Production_Rate'] - pairs['IE_Times_Prod']
+    pairs['Delta_WH'] =  (pairs['Updated_Production_Rate'] - pairs['Updated_Oil_Production_Rate']) - ( pairs['Pair_Prod_Rate'] - pairs['IE_Times_Prod'])  #(U10-V10)-(K10-M10)
+
+    summary_pairs = pairs[['Pair_Inj_Rate','Pair_Prod_Rate','IE_Times_Prod',
+                            'RE_Times_Inj','Updated_Injection_Rate','Delta_Injection',
+                            'Updated_Production_Rate','Updated_Oil_Production_Rate',
+                            'Delta_Oil','Delta_WH'
+                            ]].sum(axis=0).to_dict()
+    summary_pairs['name'] = strategy['pfm_strategy_name']
+
+    x = summary_pairs['IE_Times_Prod'] if strategy['strategy_type'] == 'IE' else summary_pairs['RE_Times_Inj']
+    summary_pairs['Delta_WH'] = summary_pairs['Delta_Oil'] - x 
+
+    for key,value in summary_pairs.items():
+        try:
+            new_value = round( float(value),1)
+            summary_pairs[key] = new_value
+            print( key, ' is a number')
+        except:
+            pass 
+        
+    ##########################
+    #updated flow rates and well details 
+    inj_rates  = (pairs.groupby(['Pair_Inj'])['Updated_Injection_Rate'].sum())
+    prod_rates = (pairs.groupby(['Pair_Prod'])['Updated_Production_Rate'].sum())
+    updated_rates = pd.concat([inj_rates,prod_rates]).reset_index()
+    updated_rates.columns = ['Well','PFM_Flow_Rate']
+    
+    initial_rates = wells.groupby('Well')['Flow_Rate'].sum().reset_index() 
+    initial_rates.columns = ['Well','Flow_Rate']
+
+    well_details = pd.merge( left = updated_rates, right = wells,on ='Well',how= 'left').round(1)
+    well_details['Change'] = well_details['PFM_Flow_Rate'] - well_details['Flow_Rate']
+    well_details['Above_Limit'] = well_details['PFM_Flow_Rate'] - well_details['Max_Rate'] 
+
+    ##########################    
+ 
+    return pairs, summary_pairs, well_details 
+    # end of unconstrained.
+  
+    
+    
+    
+    '''
+    #IF(O47>$N$24,MIN(1,(O47-$N$24)/($N$23-$N$24)),MIN(1,($N$24-O47)/($N$24-$N$22)))
+    pairs['Dopt_IE'] = pairs['Pair_IE'].apply( lambda value: min(1,( value-P4)/(P3-P4)) if value > P4 else min(1,(P4-value)/(P4-P2)) )
+
+    #IF(P8>$P$4,1+$R$3*POWER(Q8,$P$5),1+$R$2*POWER(Q8,$P$5))
+    P5 = input_data['shape_weighting_curve']
+    P8,Q8 = pairs['IE_or_RE'].values, pairs['Dopt_IE'].values
+    wmin, wmax = input_data['minimum_weight'], input_data['maximum_weight']
+        
+    # Pair_Weight
+    Pair_Weight = [] 
+    for n,value in enumerate(P8):
+        x = 1 + wmax * pow( Q8[n], P5) if value > P4 else 1 + wmin * pow (Q8[n],P5)
+        Pair_Weight.append( x )   
+    pairs['Pair_Weight'] = Pair_Weight
+        
+    # next 6 columns 
+    pairs['Updated_Injection_Rate'] = pairs['Pair_Inj_Rate']  * pairs['Pair_Weight']
+    pairs['Delta_Injection'] = pairs['Updated_Injection_Rate'] - pairs['Pair_Inj_Rate']
+    pairs['Updated_Production_Rate'] = pairs['Pair_Weight']  * pairs['Pair_Prod_Rate'] 
+        
+    pairs['Updated_Oil_Production_Rate'] = pairs['Pair_Weight']  * pairs['IE_Times_Prod']
+    pairs['Delta_Oil'] = pairs['Updated_Oil_Production_Rate'] - pairs['IE_Times_Prod']
+    pairs['Delta_WH'] =  (pairs['Updated_Production_Rate'] - pairs['Updated_Oil_Production_Rate']) - ( pairs['Pair_ProdResvolRate'] - pairs['IE_Times_Prod'])  #(U10-V10)-(K10-M10)
+
+    # this finishes the left part of the PFM-Comp in Sanjoy's spreadsheet 
+    #here  
+    inj_ResvolRate_sum  = wells[ wells['W_Type'] == 'INJ' ]['W_ResvolRate'].sum()
+    prod_ResvolRate_sum = wells[ wells['W_Type'] == 'PROD' ]['W_ResvolRate'].sum()
+
+    #in Sanjoys spreadsheet this is W_InjectionFraction and W_ProductionFraction
+    wells['W_RateFraction'] = -1 
+    mask = wells['W_Type'] == 'INJ'
+    wells.loc[mask,'W_RateFraction'] = wells.loc[mask,'W_ResvolRate']  / inj_ResvolRate_sum
+
+    mask = wells['W_Type'] == 'PROD'
+    wells.loc[mask,'W_RateFraction'] = wells.loc[mask,'W_ResvolRate']  / prod_ResvolRate_sum
+
+    
+    names = wells[ 'W_Name' ].values 
+    rate_fraction = wells[ 'W_RateFraction' ].values 
+    name_rate_map = {} 
+    for n, name in enumerate(names):
+        name_rate_map[name] = rate_fraction[n] 
+        
+            
+    pairs['Old_Well_to_Field_InjectionRatio'] = pairs['Pair_Inj'].apply( lambda name: name_rate_map[name] )# lambda x: )
+    pairs['Old_Pair_to_Field_InjectionRatio'] = pairs['Old_Well_to_Field_InjectionRatio'] * pairs['Pair_InjAlloc']
+    pairs['Pair_to_Field_Delta'] = ( pairs['Pair_Weight'] - 1.0 ) * pairs['Old_Pair_to_Field_InjectionRatio'] 
+    pairs['New_Pair_to_Field_InjectionRatio'] = pairs['Old_Pair_to_Field_InjectionRatio'] + pairs['Pair_to_Field_Delta']
+        
+    # calculate New_Well_to_Field_Inj_Capacity_Ratio
+    # col AA in Sanjoys spreadsheet 
+    old_well_to_field_injection_ratio = pairs.groupby( ['Pair_Inj'] )['Old_Well_to_Field_InjectionRatio'].mean().to_dict()
+    pair_to_field_delta = pairs.groupby( ['Pair_Inj'] )['Pair_to_Field_Delta'].sum().to_dict()  
+    inj_names = old_well_to_field_injection_ratio.keys() 
+        
+    new_well_to_field_inj_capacity_ratio = {}
+    new_well_to_field_inj_capacity_ratio_sum = 0.0 
+    for inj_name in inj_names:
+        
+        new_well_to_field_inj_capacity_ratio[ inj_name ] = old_well_to_field_injection_ratio[inj_name] + pair_to_field_delta[inj_name]
+        new_well_to_field_inj_capacity_ratio_sum = new_well_to_field_inj_capacity_ratio[ inj_name ] + new_well_to_field_inj_capacity_ratio_sum 
+
+    # up to here is column AF in the example spreadsheet
+    # the columns AF and AE, however, are stores as dictionaries 
+    # Inj_Capacity_Norm
+    inj_capacity_norm = {} 
+    for inj_name in inj_names:
+        inj_capacity_norm[ inj_name ] = new_well_to_field_inj_capacity_ratio[ inj_name ] / new_well_to_field_inj_capacity_ratio_sum
+        
+    #print('#lets produce the first output: injectors_table_output')     
+    injectors_table_output = wells[ wells['W_Name'].isin(injector_names) ].copy() 
+    injectors_table_output['Capacity_Fraction'] = injectors_table_output['W_Name'].apply( lambda name: inj_capacity_norm[ name ]  )
+    injectors_table_output['New_PFM_Target'] = injectors_table_output['Capacity_Fraction'] * input_data['injection_capacity']
+    injectors_table_output['DeltaRate'] = injectors_table_output['New_PFM_Target']  - injectors_table_output['W_ResvolRate']
+            
+    #print( injectors_table_output )
+    #print( injectors_table_output['W_ResvolRate'].sum() ) 
+    injectors_table_output.to_csv('injectors_table_output.csv',index=False)
+   
+    return injectors_table_output
+    '''
+ 
+
+
+def get_pfm_injection_estimates_v5_old_no_well_details( wells_df, pairs_df, strategy ):
         
     #input_data = strategy 
     #this basically reproduces Sanjoy's spreadsheet with the things we need and those we dont need.
@@ -2243,4 +2505,17 @@ def get_pfm_injection_estimates_v5( wells_df, pairs_df, strategy ):
 
 
 
+
+
+
+
+
+
+                
+                
+                
+                
+                
+                
+                
 
